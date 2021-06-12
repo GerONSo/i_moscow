@@ -13,4 +13,5 @@
     <color name="alpha">#00FFFFFF</color>
     <color name="teal">#CFF6EB</color>
     <color name="stroke">#54000000</color>
+    <color name ="main_skill">#909090 </color>
 </resources>
