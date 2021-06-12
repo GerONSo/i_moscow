@@ -14,13 +14,23 @@ import android.widget.ImageView
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.widget.doOnTextChanged
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.geron.ai_moscow_mobile.data_classes.Event
+import com.geron.ai_moscow_mobile.viewmodels.EventsViewModel
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
 
 class EventsFragment : Fragment() {
 
     lateinit var motionLayout: MotionLayout
+    val model: EventsViewModel by activityViewModels()
+    val eventsAdapter: EventsAdapter by lazy {
+        EventsAdapter()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,7 +47,9 @@ class EventsFragment : Fragment() {
         val searchCardView = view.findViewById<CardView>(R.id.ifv_search)
         val eventsRecyclerView = view.findViewById<RecyclerView>(R.id.rv_events)
         motionLayout = view.findViewById(R.id.events_motion_layout)
-
+        model.getEventList().observe(viewLifecycleOwner, { eventList ->
+            eventsAdapter.updateList(eventList)
+        })
         searchCardView.setOnClickListener {
             searchEditText.requestFocus()
         }
@@ -75,7 +87,7 @@ class EventsFragment : Fragment() {
         }
         setKeyboardVisibilityListener()
         eventsRecyclerView.apply {
-            adapter = EventsAdapter()
+            adapter = eventsAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         }
     }

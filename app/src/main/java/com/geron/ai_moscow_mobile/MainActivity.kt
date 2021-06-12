@@ -6,12 +6,19 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 
 class MainActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val eventsFragment = EventsFragment()
-        val eventFragment = EventFragment()
-        openFragment(eventFragment)
+        openFragment(eventsFragment)
+        setCallbacks()
+    }
+
+    private fun setCallbacks() {
+        CallbackHelper.onEventItemClicked = { position ->
+            openFragment(EventFragment(position))
+        }
     }
 
     private fun openFragment(fragment: Fragment) {
