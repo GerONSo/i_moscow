@@ -49,8 +49,8 @@ class EventFragment(val position: Int) : Fragment() {
         Picasso.get()
             .load(ServerHelper.BASE_URL + currentEvent?.photoLink)
             .into(logoImageView)
-//        departmentTextView.text = currentEvent?.department
-//        creatorTextView.text = currentEvent?.creator
+        departmentTextView.text = currentEvent?.department
+        creatorTextView.text = currentEvent?.creator
         timeTextView.text = currentEvent?.time
         placeTextView.text = currentEvent?.address
         descriptionTextView.text = currentEvent?.fullDescription

@@ -14,5 +14,7 @@ data class Event (
     @field:Json(name = "mail") val mail: String,
     @field:Json(name = "link") val link: String,
     @field:Json(name = "photo_link") val photoLink: String,
-    @field:Json(name = "participants") val participants: List<String>
+    @field:Json(name = "participants") val participants: List<String>,
+    @field:Json(name = "department") val department: String,
+    @field:Json(name = "creator") val creator: String
 )

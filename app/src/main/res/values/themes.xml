@@ -18,4 +18,8 @@
     <style name="MediumTextView" parent="Widget.AppCompat.TextView">
         <item name="fontFamily">@font/ttfirsneue_medium</item>
     </style>
+
+    <style name="MediumButtonText" parent="Widget.AppCompat.Button">
+        <item name="fontFamily">@font/ttfirsneue_medium</item>
+    </style>
 </resources>
