@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         openFragment(startFragment)
         setCallbacks()
     }
-
+//test
     private fun setCallbacks() {
         CallbackHelper.onEventItemClicked = { position ->
             openFragment(EventFragment(position))
