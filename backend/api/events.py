@@ -19,12 +19,12 @@ def create_event():
         photo.save(os.path.join("/photos/", event.id))
 
     query = '''insert into events
-        (id, name, short_description, type, date, time, full_description, address, mail, link, photo)
+        (id, name, short_description, event_types, date, time, full_description, address, mail, link, photo)
         values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
     '''
 
-    print(query)
-    mydb.execute(query, event.to_tuple())
+    print(event.to_dataraw())
+    mydb.execute(query, event.to_dataraw())
     myconnect.commit()
     return event.to_primitive()
 
