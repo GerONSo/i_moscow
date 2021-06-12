@@ -20,8 +20,8 @@ def create_account():
         mydb.execute("insert into account_tag_match (id, tag) values (%s, %s)", (account.id, tag))
     query = '''
         insert into accounts 
-            (id, name, mail, password, snils, description, links, photo)
-            values (%s, %s, %s, %s, %s, %s, %s, %s)
+            (id, name, mail, password, snils, description, links, photo, my_events)
+            values (%s, %s, %s, %s, %s, %s, %s, %s, %s)
     '''
     mydb.execute(query, account.to_dataraw(skip_fields=["tags"]))
     myconnect.commit()
@@ -41,5 +41,38 @@ def authorise():
     mydb.execute("delete from session where id = %s", (id_, ))
     cookie = generate_cookie()
     mydb.execute("insert into session (id, cookie) values (%s, %s)", (account.id, cookie))
+    myconnect.commit()
 
     return Response(json.dumps({"cookie": cookie, "account": account.to_dict()}), mimetype='application/json')
+
+
+@app.route("/get_my_account/<cookie>", methods=["GET"])
+def get_my_account(cookie):
+    user_id = common.actions.make_cookie_authorise(cookie)
+    if user_id is None:
+        return {}, 401
+    account = common.actions.get_account_by_id(user_id)
+    return account.to_primitive()
+
+
+@app.route("/update_my_account/<cookie>", methods=["POST"])
+def update_my_account(cookie):
+    user_id = common.actions.make_cookie_authorise(cookie)
+    if user_id is None:
+        return {}, 401
+    account = Account(**request.json)
+    if user_id != account.id:
+        return {}, 403
+
+    mydb.execute("delete from account_tag_match where id = %s", (user_id, ))
+    for tag in account.tags:
+        mydb.execute("insert into account_tag_match (id, tag) values (%s, %s)", (account.id, tag))
+
+    query = '''
+            update accounts set
+                id = %s, name = %s, mail = %s, password = %s, snils = %s, description = %s, links = %s, 
+                 photo = %s, my_events = %s where id = %s
+        '''
+    mydb.execute(query, account.to_dataraw(skip_fields=["tags"]) + (account.id, ))
+    myconnect.commit()
+    return account.to_primitive()
