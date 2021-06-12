@@ -13,3 +13,7 @@ def generate_cookie():
     for i in range(25):
         cookie += str(random.randint(0, 9))
     return cookie
+
+
+def to_table_list(arr):
+    return ", ".join(arr)

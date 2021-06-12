@@ -2,6 +2,7 @@ import json
 
 from flask import Response
 
+import common.actions
 from config import app, mydb, myconnect
 from flask import request
 from common.models import Account
@@ -31,13 +32,9 @@ def create_account():
 @app.route('/authorise', methods=["POST"])
 def authorise():
     id_, password = request.json["id"], request.json["password"]
-    mydb.execute("select * from accounts where id = %s", (id_, ))
-    template = mydb.fetchall()
-    if not template:
+    account = common.actions.get_account_by_id(id_)
+    if not account:
         return {}, 400
-    print(template)
-    account = Account(*template[0])
-    print(account.password, password)
     if account.password != password:
         return {}, 403
 
