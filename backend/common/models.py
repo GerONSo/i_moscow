@@ -44,7 +44,9 @@ class Event(BaseModel):
                  mail="",
                  link="",
                  photo_type="/photos/xs.jpg",
-                 participants=None):
+                 participants=None,
+                 department="",
+                 creator=""):
         if id_ is None:
             id_ = generate_id()
         if event_types is None:
@@ -67,6 +69,8 @@ class Event(BaseModel):
         self.link = link
         self.photo_link = photo_type
         self.participants = participants
+        self.department = department
+        self.creator = creator
 
 
 class Account(BaseModel):

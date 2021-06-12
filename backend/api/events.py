@@ -14,8 +14,9 @@ import os
 def create_event():
     event = Event(**request.json)
     query = '''insert into events
-        (id, name, short_description, event_types, date, time, full_description, address, mail, link, photo)
-        values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        (id, name, short_description, event_types, date, time, full_description, address, mail, link, photo,
+         participants, department, creator)
+        values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
     '''
 
     mydb.execute(query, event.to_dataraw())
@@ -38,7 +39,6 @@ def get_my_events(cookie):
     if user_id is None:
         return {}, 401
     account = common.actions.get_account_by_id(user_id)
-    print(account.to_primitive())
     events = [common.actions.get_event_by_id(id_) for id_ in account.my_events]
     result = [event.to_dict() for event in events]
     return Response(json.dumps(result), mimetype='application/json')
@@ -59,7 +59,6 @@ def join_to_event(cookie):
         return {}, 400
     event.participants.append(account.id)
     account.my_events.append(event.id)
-    print(account.my_events)
     mydb.execute("update accounts set my_events = %s where id = %s", (to_table_list(account.my_events), account.id))
     mydb.execute("update events set participants = %s where id = %s", (to_table_list(event.participants), event.id))
     myconnect.commit()
