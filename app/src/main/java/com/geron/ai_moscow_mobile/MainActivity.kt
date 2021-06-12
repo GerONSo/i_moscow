@@ -11,7 +11,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val eventsFragment = EventsFragment()
-        openFragment(eventsFragment)
+        val startFragment = StartFragment()
+        openFragment(startFragment)
         setCallbacks()
     }
 
@@ -23,7 +24,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun openFragment(fragment: Fragment) {
         supportFragmentManager.commit {
-            replace(R.id.fragment_container, fragment)
+            add(R.id.fragment_container, fragment)
             addToBackStack(null)
         }
     }

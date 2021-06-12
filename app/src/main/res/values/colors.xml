@@ -12,4 +12,5 @@
     <color name="poor_red">#F46937</color>
     <color name="alpha">#00FFFFFF</color>
     <color name="teal">#CFF6EB</color>
+    <color name="stroke">#54000000</color>
 </resources>

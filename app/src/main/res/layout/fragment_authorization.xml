@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:background="@color/alpha"
+    android:id="@+id/authorization_motion_layout"
+    app:layoutDescription="@xml/start_fragment_description"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_authorization"
+        android:text="Авто\nризация"
+        android:textSize="38sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.45"
+        style="@style/MediumTextView"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="32dp"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:id="@+id/et_authorization_login"
+        android:paddingLeft="12dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="48dp"
+        android:hint="Введите логин"
+        android:imeOptions="actionNext"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/btn_background"
+        app:layout_constraintTop_toBottomOf="@id/tv_authorization"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:id="@+id/et_password"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="48dp"
+        android:layout_marginTop="16dp"
+        android:hint="Введите пароль"
+        android:inputType="textPassword"
+        android:imeOptions="actionDone"
+        android:paddingLeft="12dp"
+        android:background="@drawable/btn_background"
+        app:layout_constraintTop_toBottomOf="@id/et_authorization_login"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_forget_password"
+        android:text="Забыли пароль?"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@id/et_password"
+        style="@style/MediumTextView"
+        android:layout_marginTop="32dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="32dp"/>
+
+    <Button
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingLeft="14dp"
+        android:paddingRight="14dp"
+        android:layout_marginLeft="32dp"
+        android:id="@+id/btn_next"
+        android:background="@drawable/btn_background"
+        android:text="Вперед"
+        android:textColor="@color/black"
+        android:textAllCaps="false"
+        android:textSize="16sp"
+        app:layout_constraintTop_toTopOf="@id/tv_forget_password"
+        app:layout_constraintRight_toRightOf="@id/et_password"
+        app:layout_constraintLeft_toRightOf="@id/tv_forget_password"/>
+
+</androidx.constraintlayout.motion.widget.MotionLayout>
