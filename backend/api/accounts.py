@@ -70,9 +70,9 @@ def update_my_account(cookie):
 
     query = '''
             update accounts set
-                id = %s, name = %s, mail = %s, password = %s, snils = %s, description = %s, links = %s, 
-                 photo = %s, my_events = %s where id = %s
+                name = %s, mail = %s, password = %s, snils = %s, description = %s, links = %s, 
+                photo = %s, my_events = %s where id = %s
         '''
-    mydb.execute(query, account.to_dataraw(skip_fields=["tags"]) + (account.id, ))
+    mydb.execute(query, account.to_dataraw(skip_fields=["id", "tags"]) + (account.id, ))
     myconnect.commit()
     return account.to_primitive()
