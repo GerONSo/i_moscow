@@ -13,9 +13,15 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.widget.doOnTextChanged
+import androidx.fragment.app.viewModels
+import com.geron.ai_moscow_mobile.data_classes.User
+import com.geron.ai_moscow_mobile.viewmodels.AuthorizeViewModel
+import kotlinx.coroutines.runBlocking
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
 
 class StartFragment : Fragment() {
+
+    val authorizeViewModel: AuthorizeViewModel by viewModels()
 
     val startNextButton: Button by lazy {
         requireView().findViewById(R.id.btn_start_next)
@@ -26,12 +32,18 @@ class StartFragment : Fragment() {
     }
 
     val authorizationLoginEditText: EditText by lazy {
-        requireView().findViewById(R.id.et_authorization_login)
+        startMotionLayout.findViewById(R.id.et_authorization_login)
     }
 
-    val authorizationMotionLayout: MotionLayout by lazy {
-        startMotionLayout.findViewById(R.id.fragment_authorization)
+    val authorizationPasswordEditText: EditText by lazy {
+        startMotionLayout.findViewById(R.id.et_password)
     }
+
+    val buttonLogin: Button by lazy {
+        requireView().findViewById(R.id.btn_login)
+    }
+
+    var currentState = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,21 +56,37 @@ class StartFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         startNextButton.setOnClickListener {
             startMotionLayout.transitionToEnd()
+            currentState = 1
+        }
+        buttonLogin.setOnClickListener {
+            runBlocking {
+                authorizeViewModel.login(
+                    User(
+                        authorizationLoginEditText.text.toString(),
+                        authorizationPasswordEditText.text.toString()
+                    )
+                )
+            }
+        }
+        CallbackHelper.onBackPressedStartFragment = {
+            if (currentState == 1) {
+                startMotionLayout.setTransition(R.id.authorization_transition)
+                startMotionLayout.transitionToStart()
+                currentState = 0
+            }
         }
         authorizationLoginEditText.apply {
             onFocusChangeListener = View.OnFocusChangeListener { view, hasFocus ->
                 if (hasFocus) {
-                    showKeyboard()
-                    authorizationMotionLayout.transitionToEnd()
+                    startMotionLayout.setTransition(R.id.authorization_keyboard_transition)
+                    startMotionLayout.transitionToEnd()
+                } else {
+                    startMotionLayout.setTransition(R.id.authorization_keyboard_transition)
+                    startMotionLayout.transitionToStart()
                 }
             }
-            setOnEditorActionListener { textView, actionId, keyEvent ->
-                if (actionId == EditorInfo.IME_ACTION_NEXT) {
-                    // TODO Search
-                    true
-                }
-                false
-            }
+//            setOnEditorActionListener { textView, actionId, keyEvent ->
+//            }
         }
         setKeyboardVisibilityListener()
     }
@@ -67,6 +95,7 @@ class StartFragment : Fragment() {
         KeyboardVisibilityEvent.setEventListener(activity as Activity) { isOpen ->
             if (!isOpen) {
                 startMotionLayout.requestFocus()
+                authorizationLoginEditText.clearFocus()
             }
         }
     }
@@ -76,4 +105,12 @@ class StartFragment : Fragment() {
             context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
     }
+
+    private fun closeKeyboard() {
+        val imm: InputMethodManager =
+            context?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view?.windowToken, 0)
+    }
+
+
 }

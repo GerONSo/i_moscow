@@ -9,4 +9,6 @@ object CallbackHelper {
     lateinit var onMyEvents:() -> Unit
     lateinit var onMyProjects:() -> Unit
     lateinit var onAllProjects:()->Unit
+
+    lateinit var onBackPressedStartFragment: () -> Unit
 }

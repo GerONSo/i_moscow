@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.telecom.Call
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
+import kotlin.reflect.typeOf
 
 class MainActivity : AppCompatActivity() {
 
@@ -43,9 +44,27 @@ class MainActivity : AppCompatActivity() {
 
     private fun openFragment(fragment: Fragment) {
         supportFragmentManager.commit {
-            add(R.id.fragment_container, fragment)
-            addToBackStack(null)
+            add(R.id.fragment_container, fragment, fragment::class.simpleName)
+            setReorderingAllowed(true)
+            addToBackStack(fragment::class.simpleName)
         }
+        supportFragmentManager.backStackEntryCount
     }
 
+    override fun onBackPressed() {
+        val index = supportFragmentManager.backStackEntryCount - 1
+        val backEntry = supportFragmentManager.getBackStackEntryAt(index)
+        val tag = backEntry.name
+        val fragment = supportFragmentManager.findFragmentByTag(tag)
+        if(fragment is StartFragment) {
+            CallbackHelper.onBackPressedStartFragment()
+            return
+        }
+        if(supportFragmentManager.backStackEntryCount > 0) {
+            supportFragmentManager.popBackStack()
+        }
+        else {
+            super.onBackPressed()
+        }
+    }
 }

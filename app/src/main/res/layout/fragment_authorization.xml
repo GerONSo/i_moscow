@@ -4,7 +4,7 @@
     android:layout_height="0dp"
     android:background="@color/alpha"
     android:id="@+id/authorization_motion_layout"
-    app:layoutDescription="@xml/start_fragment_description"
+    app:layoutDescription="@xml/authorization_fragment_description"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
@@ -28,8 +28,8 @@
         android:layout_marginLeft="32dp"
         android:layout_marginRight="48dp"
         android:hint="Введите логин"
-        android:imeOptions="actionNext"
         android:layout_marginTop="16dp"
+        android:maxLines="1"
         android:background="@drawable/btn_background"
         app:layout_constraintTop_toBottomOf="@id/tv_authorization"/>
 
@@ -42,7 +42,7 @@
         android:layout_marginTop="16dp"
         android:hint="Введите пароль"
         android:inputType="textPassword"
-        android:imeOptions="actionDone"
+        android:maxLines="1"
         android:paddingLeft="12dp"
         android:background="@drawable/btn_background"
         app:layout_constraintTop_toBottomOf="@id/et_authorization_login"/>
