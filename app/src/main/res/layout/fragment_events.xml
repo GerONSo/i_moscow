@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/events_motion_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layoutDescription="@xml/event_fragment_description"
+    tools:context=".EventsFragment"
+    android:background="@color/teal">
+
+    <ImageView
+        android:id="@+id/btn_menu"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/ic_btn_menu"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/ifv_search"
+        android:layout_width="70dp"
+        android:layout_height="48dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp"
+        app:cardCornerRadius="32dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_left_search"
+        android:layout_width="36dp"
+        android:layout_height="0dp"
+        android:elevation="16dp"
+        android:padding="8dp"
+        android:src="@drawable/ic_search"
+        app:layout_constraintBottom_toBottomOf="@id/et_search"
+        app:layout_constraintLeft_toLeftOf="@id/et_search"
+        app:layout_constraintRight_toRightOf="@id/et_search"
+        app:layout_constraintTop_toTopOf="@id/et_search" />
+
+    <ImageView
+        android:id="@+id/iv_right_search"
+        android:layout_width="36dp"
+        android:layout_height="0dp"
+        android:elevation="16dp"
+        android:paddingRight="16dp"
+        app:layout_constraintBottom_toBottomOf="@id/et_search"
+        app:layout_constraintRight_toRightOf="@id/et_search"
+        app:layout_constraintTop_toTopOf="@id/et_search" />
+
+    <EditText
+        android:id="@+id/et_search"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:background="@color/alpha"
+        android:elevation="8dp"
+        android:imeOptions="actionSearch"
+        android:inputType="text"
+        android:maxLines="1"
+        android:paddingLeft="46dp"
+        android:paddingRight="32dp"
+        android:textSize="17sp"
+        app:layout_constraintBottom_toBottomOf="@id/ifv_search"
+        app:layout_constraintLeft_toLeftOf="@id/ifv_search"
+        app:layout_constraintRight_toRightOf="@id/ifv_search"
+        app:layout_constraintTop_toTopOf="@id/ifv_search" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_title"
+        android:text="Ищешь какое мероприятие посетить?"
+        android:textSize="18sp"
+        style="@style/MediumTextView"
+        app:layout_constraintTop_toBottomOf="@id/btn_menu"
+        android:textColor="@color/black"
+        android:layout_marginTop="54dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_subtitle"
+        android:textColor="@color/black"
+        android:text="Вот небольшая подборка для тебя :)"
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@id/tv_title"
+        android:layout_marginTop="4dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:id="@+id/rv_events"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/tv_subtitle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:listitem="@layout/card_event"/>
+
+
+</androidx.constraintlayout.motion.widget.MotionLayout>
