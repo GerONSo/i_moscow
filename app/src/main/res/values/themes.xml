@@ -12,6 +12,7 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
         <item name="fontFamily">@font/ttfirsneue_extralight</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="MediumTextView" parent="Widget.AppCompat.TextView">
