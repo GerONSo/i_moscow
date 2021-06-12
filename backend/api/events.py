@@ -3,7 +3,6 @@ import json
 from flask import Response
 
 import common.actions
-from common import to_table_list
 from config import app, mydb, myconnect
 from flask import request
 from common.models import Event
@@ -53,13 +52,13 @@ def join_to_event(cookie):
 
     account = common.actions.get_account_by_id(user_id)
     event = common.actions.get_event_by_id(event_id)
-    if event_id is None:
+    if event is None:
         return {}, 400
     if account.id in event.participants:
         return {}, 400
     event.participants.append(account.id)
     account.my_events.append(event.id)
-    mydb.execute("update accounts set my_events = %s where id = %s", (to_table_list(account.my_events), account.id))
-    mydb.execute("update events set participants = %s where id = %s", (to_table_list(event.participants), event.id))
+    mydb.execute("update accounts set my_events = %s where id = %s", (json.dumps(account.my_events), account.id))
+    mydb.execute("update events set participants = %s where id = %s", (json.dumps(event.participants), event.id))
     myconnect.commit()
     return event.to_primitive()

@@ -1,5 +1,6 @@
 from common.models import Account
 from common.models import Event
+from common.models import Project
 from config import mydb
 
 
@@ -32,3 +33,11 @@ def get_event_by_id(id_):
     if not template:
         return None
     return Event(*template[0])
+
+
+def get_project_by_id(id_):
+    mydb.execute("select * from projects where id = %s", (id_, ))
+    template = mydb.fetchall()
+    if not template:
+        return None
+    return Project(*template[0])

@@ -1,7 +1,8 @@
 import json
 
 import common.actions
-from common import generate_id, to_table_list
+
+from common import generate_id
 
 
 class BaseEncoder(json.JSONEncoder):
@@ -25,8 +26,8 @@ class BaseModel:
             if item[0] not in (skip_fields or []):
                 res.append(item[1])
         for i in range(len(res)):
-            if type(res[i]) == list:
-                res[i] = to_table_list(res[i])
+            if type(res[i]) in (list, dict):
+                res[i] = json.dumps(res[i])
         return tuple(res)
     def keys_tuple(self):
         return tuple(self.keys_list())
@@ -54,9 +55,9 @@ class Event(BaseModel):
         if participants is None:
             participants = []
         if type(event_types) == str:
-            event_types = event_types.split(", ") if event_types != "" else []
+            event_types = json.loads(event_types)
         if type(participants) == str:
-            participants = participants.split(", ") if participants != "" else []
+            participants = json.loads(participants)
         self.id = id_
         self.name = name
         self.short_description = short_description
@@ -84,6 +85,8 @@ class Account(BaseModel):
                  links=None,
                  photo_type="/photos/xs.jpg",
                  my_events=None,
+                 master_project_ids=None,
+                 slave_project_ids=None,
                  tags=None):
         if id is None:
             id = generate_id()
@@ -91,12 +94,20 @@ class Account(BaseModel):
             tags = common.actions.get_tags_by_account(id)
         if links is None:
             links = []
+        if master_project_ids is None:
+            master_project_ids = []
+        if type(master_project_ids) == str:
+            master_project_ids = json.loads(master_project_ids)
+        if slave_project_ids is None:
+            slave_project_ids = []
+        if type(slave_project_ids) == str:
+            slave_project_ids = json.loads(slave_project_ids)
         if type(links) == str:
-            links = links.split(", ") if links != "" else []
+            links = json.loads(links)
         if my_events is None:
             my_events = []
         if type(my_events) == str:
-            my_events = my_events.split(", ") if my_events != "" else []
+            my_events = json.loads(my_events)
         self.id = id
         self.name = name
         self.mail = mail
@@ -107,3 +118,42 @@ class Account(BaseModel):
         self.tags = tags
         self.photo_link = photo_type
         self.my_events = my_events
+        self.master_project_ids = master_project_ids
+        self.slave_project_ids = slave_project_ids
+
+
+class Project(BaseModel):
+    def __init__(self,
+                 id=None,
+                 name="Common",
+                 master_id=None,
+                 chat_id=None,
+                 slaves_id=None,
+                 photo_type="/photos/xs.jpg",
+                 metadata=None,
+                 tags=None):
+        if id is None:
+            id = generate_id()
+        if master_id is None:
+            raise ValueError
+        if chat_id is None:
+            chat_id = generate_id()
+        if slaves_id is None:
+            slaves_id = []
+        if type(slaves_id) == str:
+            slaves_id = json.loads(slaves_id)
+        if metadata is None:
+            metadata = dict()
+        if type(metadata) == str:
+            metadata = json.loads(metadata)
+        if tags is None:
+            tags = common.actions.get_tags_by_account(id)
+
+        self.id = id
+        self.name = name
+        self.master_id = master_id
+        self.chat_id = chat_id
+        self.slaves_id = slaves_id
+        self.photo_link = photo_type
+        self.metadata = metadata
+        self.tags = tags

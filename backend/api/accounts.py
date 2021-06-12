@@ -20,8 +20,8 @@ def create_account():
         mydb.execute("insert into account_tag_match (id, tag) values (%s, %s)", (account.id, tag))
     query = '''
         insert into accounts 
-            (id, name, mail, password, snils, description, links, photo, my_events)
-            values (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+            (id, name, mail, password, snils, description, links, photo, my_events, master_project_ids, slave_project_ids)
+            values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
     '''
     mydb.execute(query, account.to_dataraw(skip_fields=["tags"]))
     myconnect.commit()
@@ -55,6 +55,12 @@ def get_my_account(cookie):
     return account.to_primitive()
 
 
+@app.route("/get_account_by_id", methods=["GET"])
+def get_account_by_id():
+    account = common.actions.get_account_by_id(request.json["id"])
+    return account.to_primitive()
+
+
 @app.route("/update_my_account/<cookie>", methods=["POST"])
 def update_my_account(cookie):
     user_id = common.actions.make_cookie_authorise(cookie)
@@ -71,7 +77,7 @@ def update_my_account(cookie):
     query = '''
             update accounts set
                 name = %s, mail = %s, password = %s, snils = %s, description = %s, links = %s, 
-                photo = %s, my_events = %s where id = %s
+                photo = %s, my_events = %s, master_project_ids = %s, slave_project_ids = %s where id = %s
         '''
     mydb.execute(query, account.to_dataraw(skip_fields=["id", "tags"]) + (account.id, ))
     myconnect.commit()
