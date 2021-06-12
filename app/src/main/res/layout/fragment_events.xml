@@ -74,7 +74,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/tv_title"
-        android:text="Ищешь к камому проекту \nприсоедениться?"
+        android:text="Ищешь какое мероприятие посетить?"
         android:textSize="18sp"
         style="@style/MediumTextView"
         app:layout_constraintTop_toBottomOf="@id/btn_menu"

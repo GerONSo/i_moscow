@@ -10,7 +10,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val eventsFragment = EventsFragment()
-        openFragment(eventsFragment)
+        val eventFragment = EventFragment()
+        openFragment(eventFragment)
     }
 
     private fun openFragment(fragment: Fragment) {
