@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.cardview.widget.CardView
@@ -27,6 +28,7 @@ import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
 class EventsFragment : Fragment() {
 
     lateinit var motionLayout: MotionLayout
+    lateinit var buttonMenu:Button
     val model: EventsViewModel by activityViewModels()
     val eventsAdapter: EventsAdapter by lazy {
         EventsAdapter()
@@ -47,6 +49,10 @@ class EventsFragment : Fragment() {
         val searchCardView = view.findViewById<CardView>(R.id.ifv_search)
         val eventsRecyclerView = view.findViewById<RecyclerView>(R.id.rv_events)
         motionLayout = view.findViewById(R.id.events_motion_layout)
+        buttonMenu = view.findViewById(R.id.btn_menu_open)
+        buttonMenu.setOnClickListener {
+            CallbackHelper.onMenuClicked()
+        }
         model.getEventList().observe(viewLifecycleOwner, { eventList ->
             eventsAdapter.updateList(eventList)
         })

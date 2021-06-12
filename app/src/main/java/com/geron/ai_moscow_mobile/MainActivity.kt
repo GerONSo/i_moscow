@@ -2,6 +2,7 @@ package com.geron.ai_moscow_mobile
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.telecom.Call
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 
@@ -18,6 +19,24 @@ class MainActivity : AppCompatActivity() {
     private fun setCallbacks() {
         CallbackHelper.onEventItemClicked = { position ->
             openFragment(EventFragment(position))
+        }
+        CallbackHelper.onMenuClicked = {
+            openFragment(MenuFragment())
+        }
+        CallbackHelper.onMenuBackButtonClicked = {
+            openFragment(EventsFragment())
+        }
+        CallbackHelper.onAllProjects= {
+            openFragment(AllProjectsFragment())
+        }
+        CallbackHelper.onMyEvents= {
+            openFragment(MyEventsFragment())
+        }
+        CallbackHelper.onMyProjects= {
+            openFragment(MyProjectsFragment())
+        }
+        CallbackHelper.onProfileOpen= {
+            openFragment(ProfileFragment())
         }
     }
 

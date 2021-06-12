@@ -1,10 +1,12 @@
 package com.geron.ai_moscow_mobile
 
 import android.os.Bundle
+import android.telecom.Call
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -20,6 +22,12 @@ class MenuFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    lateinit var buttonMenuClose: Button
+    lateinit var buttonProfileOpen: Button
+    lateinit var buttonMyEvents:Button
+    lateinit var buttonMyProjects:Button
+    lateinit var buttonAllProjects:Button
+    lateinit var buttonAllEvents:Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +43,40 @@ class MenuFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_menu, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        //super.onViewCreated(view, savedInstanceState)
+        buttonMenuClose = view.findViewById(R.id.btn_menu_close)
+        buttonProfileOpen = view.findViewById(R.id.button_profile)
+        buttonAllEvents = view.findViewById(R.id.button_all_events)
+        buttonAllProjects = view.findViewById(R.id.button_all_projects)
+        buttonMyEvents = view.findViewById(R.id.button2)
+        buttonMyProjects = view.findViewById(R.id.button_events_my)
+
+        buttonAllEvents.setOnClickListener {
+            CallbackHelper.onMenuBackButtonClicked
+        }
+
+        buttonAllProjects.setOnClickListener {
+            CallbackHelper.onAllProjects
+        }
+
+        buttonMyEvents.setOnClickListener {
+            CallbackHelper.onMyEvents
+        }
+
+        buttonMyProjects.setOnClickListener {
+            CallbackHelper.onMyProjects()
+        }
+
+        buttonProfileOpen.setOnClickListener{
+            CallbackHelper.onProfileOpen()
+        }
+
+        buttonMenuClose.setOnClickListener{
+            CallbackHelper.onMenuBackButtonClicked()
+        }
     }
 
     companion object {
