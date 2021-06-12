@@ -34,7 +34,7 @@ def get_events_list():
 
 @app.route("/get_my_events/<cookie>", methods=["GET"])
 def get_my_events(cookie):
-    user_id = common.actions.make_cookie_authorise(cookie)
+    user_id = common.actions.make_cookie_authorize(cookie)
     if user_id is None:
         return {}, 401
     account = common.actions.get_account_by_id(user_id)
@@ -45,7 +45,7 @@ def get_my_events(cookie):
 
 @app.route("/join_to_event/<cookie>", methods=["POST"])
 def join_to_event(cookie):
-    user_id = common.actions.make_cookie_authorise(cookie)
+    user_id = common.actions.make_cookie_authorize(cookie)
     event_id = request.json["event_id"]
     if user_id is None:
         return {}, 401

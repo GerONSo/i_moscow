@@ -10,7 +10,7 @@ from flask import request
 
 @app.route("/create_project/<cookie>", methods=["POST"])
 def create_project(cookie):
-    user_id = common.actions.make_cookie_authorise(cookie)
+    user_id = common.actions.make_cookie_authorize(cookie)
     if user_id is None:
         return {}, 401
     account = common.actions.get_account_by_id(user_id)
@@ -43,7 +43,7 @@ def get_projects_list():
 
 @app.route("/get_my_master_projects/<cookie>", methods=["GET"])
 def get_my_master_projects(cookie):
-    user_id = common.actions.make_cookie_authorise(cookie)
+    user_id = common.actions.make_cookie_authorize(cookie)
     if user_id is None:
         return {}, 401
     account = common.actions.get_account_by_id(user_id)
@@ -54,7 +54,7 @@ def get_my_master_projects(cookie):
 
 @app.route("/get_my_slave_projects/<cookie>", methods=["GET"])
 def get_my_slave_projects(cookie):
-    user_id = common.actions.make_cookie_authorise(cookie)
+    user_id = common.actions.make_cookie_authorize(cookie)
     if user_id is None:
         return {}, 401
     account = common.actions.get_account_by_id(user_id)
@@ -71,7 +71,7 @@ def get_project_by_id():
 
 @app.route("/join_to_project/<cookie>", methods=["POST"])
 def join_to_project(cookie):
-    user_id = common.actions.make_cookie_authorise(cookie)
+    user_id = common.actions.make_cookie_authorize(cookie)
     project_id = request.json["project_id"]
     if user_id is None:
         return {}, 401
@@ -87,6 +87,30 @@ def join_to_project(cookie):
     account.slave_project_ids.append(project.id)
     mydb.execute("update accounts set slave_project_ids = %s where id = %s",
                  (json.dumps(account.slave_project_ids), account.id))
+    mydb.execute("update projects set slaves_id = %s where id = %s", (json.dumps(project.slaves_id), project.id))
+    myconnect.commit()
+    return project.to_primitive()
+
+
+@app.route("/accept_to_project/<cookie>", methods=["POST"])
+def accept_to_project(cookie):
+    user_id = common.actions.make_cookie_authorize(cookie)
+    project_id, slave_id = request.json["project_id"], request.json["slave_id"]
+    if user_id is None:
+        return {}, 401
+
+    account = common.actions.get_account_by_id(user_id)
+    slave = common.actions.get_account_by_id(slave_id)
+    project = common.actions.get_project_by_id(project_id)
+    if project is None or slave is None:
+        return {}, 400
+    if slave.id in project.slaves_id or account.id != project.master_id:
+        return {}, 400
+
+    project.slaves_id.append(slave.id)
+    slave.slave_project_ids.append(project.id)
+    mydb.execute("update accounts set slave_project_ids = %s where id = %s",
+                 (json.dumps(slave.slave_project_ids), slave.id))
     mydb.execute("update projects set slaves_id = %s where id = %s", (json.dumps(project.slaves_id), project.id))
     myconnect.commit()
     return project.to_primitive()

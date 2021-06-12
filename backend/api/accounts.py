@@ -29,8 +29,8 @@ def create_account():
     return account.to_primitive(), 201
 
 
-@app.route('/authorise', methods=["POST"])
-def authorise():
+@app.route('/authorize', methods=["POST"])
+def authorize():
     id_, password = request.json["id"], request.json["password"]
     account = common.actions.get_account_by_id(id_)
     if not account:
@@ -43,12 +43,12 @@ def authorise():
     mydb.execute("insert into session (id, cookie) values (%s, %s)", (account.id, cookie))
     myconnect.commit()
 
-    return Response(json.dumps({"cookie": cookie, "account": account.to_dict()}), mimetype='application/json')
+    return Response(json.dumps({"cookie": cookie}), mimetype='application/json')
 
 
 @app.route("/get_my_account/<cookie>", methods=["GET"])
 def get_my_account(cookie):
-    user_id = common.actions.make_cookie_authorise(cookie)
+    user_id = common.actions.make_cookie_authorize(cookie)
     if user_id is None:
         return {}, 401
     account = common.actions.get_account_by_id(user_id)
@@ -63,7 +63,7 @@ def get_account_by_id():
 
 @app.route("/update_my_account/<cookie>", methods=["POST"])
 def update_my_account(cookie):
-    user_id = common.actions.make_cookie_authorise(cookie)
+    user_id = common.actions.make_cookie_authorize(cookie)
     if user_id is None:
         return {}, 401
     account = Account(**request.json)

@@ -4,7 +4,7 @@ from common.models import Project
 from config import mydb
 
 
-def make_cookie_authorise(cookie):
+def make_cookie_authorize(cookie):
     mydb.execute("select * from session where cookie = %s", (cookie, ))
     data = mydb.fetchall()
     if not data:
