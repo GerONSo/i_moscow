@@ -10,15 +10,18 @@ class BaseEncoder(json.JSONEncoder):
 class BaseModel:
     def to_primitive(self):
         return json.dumps(self, cls=BaseEncoder)
-    def to_dict(self):
+    def to_dict(self) -> dict:
         return BaseEncoder().default(self)
     def to_list(self):
         return [i[1] for i in list(self.to_dict().items())]
     def keys_list(self):
         return [i[0] for i in list(self.to_dict().items())]
-    def to_dataraw(self):
+    def to_dataraw(self, skip_fields=None):
         # idite nahuy yebaniy mysql
-        res = self.to_list()
+        res = []
+        for item in self.to_dict().items():
+            if item[0] not in (skip_fields or []):
+                res.append(item[1])
         for i in range(len(res)):
             if type(res[i]) == list:
                 res[i] = ", ".join(res[i])
@@ -38,14 +41,13 @@ class Event(BaseModel):
                  address="",
                  mail="",
                  link="",
-                 photo_type=""):
+                 photo_type="/photos/xs.jpg"):
         if id_ is None:
             id_ = generate_id()
         if event_types is None:
             event_types = []
         if type(event_types) == str:
             event_types = event_types.split(", ") if event_types != "" else []
-        print(event_types, type(event_types))
         self.id = id_
         self.name = name
         self.short_description = short_description
@@ -56,4 +58,34 @@ class Event(BaseModel):
         self.address = address
         self.mail = mail
         self.link = link
-        self.photo_link = "/photos/{}.{}".format(self.id, photo_type) if photo_type else ""
+        self.photo_link = photo_type
+
+
+class Account(BaseModel):
+    def __init__(self,
+                 id=None,
+                 name="Common",
+                 mail="",
+                 password="",
+                 snils="",
+                 description="",
+                 links=None,
+                 tags=None,
+                 photo_type="/photos/xs.jpg"):
+        if id is None:
+            id = generate_id()
+        if tags is None:
+            tags = []
+        if links is None:
+            links = []
+        if type(links) == str:
+            links = links.split(", ") if links != "" else []
+        self.id = id
+        self.name = name
+        self.mail = mail
+        self.password = password
+        self.snils = snils
+        self.description = description
+        self.links = links
+        self.tags = tags
+        self.photo_link = photo_type
