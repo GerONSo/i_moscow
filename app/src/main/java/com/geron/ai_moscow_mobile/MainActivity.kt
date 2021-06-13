@@ -2,6 +2,8 @@ package com.geron.ai_moscow_mobile
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.RadioButton
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import com.geron.ai_moscow_mobile.fragments.*
@@ -19,29 +21,37 @@ class MainActivity : AppCompatActivity() {
 
     //tewse
     private fun setCallbacks() {
-        CallbackHelper.onLogin = {
-            replaceFragment(EventsFragment())
-        }
-        CallbackHelper.onEventItemClicked = { position ->
-            openFragment(EventFragment(position))
-        }
-        CallbackHelper.onMenuClicked = {
-            openFragment(MenuFragment())
-        }
-        CallbackHelper.onMenuBackButtonClicked = {
-            supportFragmentManager.popBackStack()
-        }
-        CallbackHelper.onAllProjects = {
-            openFragment(AllProjectsFragment())
-        }
-        CallbackHelper.onMyEvents = {
-            openFragment(MyEventsFragment())
-        }
-        CallbackHelper.onMyProjects = {
-            openFragment(MyProjectsFragment())
-        }
-        CallbackHelper.onProfileOpen = {
-            openFragment(ProfileFragment())
+        CallbackHelper.apply {
+            onAccountClicked = { position ->
+                openFragment(AccountFragment(position))
+            }
+            onProjectClicked = { position, isMy ->
+                openFragment(ProjectFragment(position, isMy))
+            }
+            onLogin = {
+                replaceFragment(EventsFragment())
+            }
+            onEventItemClicked = { position ->
+                openFragment(EventFragment(position))
+            }
+            onMenuClicked = {
+                openFragment(MenuFragment())
+            }
+            onMenuBackButtonClicked = {
+                supportFragmentManager.popBackStack()
+            }
+            onAllProjects = {
+                openFragment(AllProjectsFragment())
+            }
+            onMyEvents = {
+                openFragment(MyEventsFragment())
+            }
+            onMyProjects = {
+                openFragment(MyProjectsFragment())
+            }
+            onProfileOpen = {
+                openFragment(ProfileFragment())
+            }
         }
     }
 
@@ -74,6 +84,21 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.popBackStack()
         } else {
             super.onBackPressed()
+        }
+    }
+
+    fun onRadioButtonClicked(view: View) {
+        if(view is RadioButton) {
+            val checked = view.isChecked
+            if(!checked) return
+            when(view.id) {
+                R.id.rb_master -> {
+                    AccountTypeRepository.type = AccountTypeRepository.AccountType.MASTER
+                }
+                R.id.rb_slave -> {
+                    AccountTypeRepository.type = AccountTypeRepository.AccountType.SLAVE
+                }
+            }
         }
     }
 }
