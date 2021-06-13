@@ -25,7 +25,7 @@ interface ApiService {
     suspend fun joinToEvent(@Path("cookie") cookie: String, @Body eventId: EventID): Response<Event>
 
     @GET("/get_my_account/{cookie}")
-    suspend fun getMyAccount()
+    suspend fun getMyAccount(@Path("cookie") cookie: String): Response<Account>
 
     @GET("/get_projects_list")
     suspend fun getProjectsList(): Response<List<Project>>
@@ -38,5 +38,8 @@ interface ApiService {
 
     @GET("/get_my_slave_projects/{cookie}")
     suspend fun getMySlaveProjects(@Path("cookie") cookie: String): Response<List<Project>>
+
+    @POST("/update_my_account/{cookie}")
+    suspend fun updateAccount(@Path("cookie") cookie: String, @Body account: Account): Response<Account>
 
 }

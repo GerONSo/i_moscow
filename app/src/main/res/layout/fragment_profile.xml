@@ -4,12 +4,6 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
-    <include
-        android:id="@+id/edit_profile_la"
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        android:visibility="gone"
-        layout="@layout/fragment_profile__edit" />
 
     <include
         android:id="@+id/no_edit_profile_la"
@@ -17,5 +11,12 @@
         android:layout_width="fill_parent"
         android:visibility="visible"
         layout="@layout/fragment_profile_no_edit" />
+
+    <include
+        android:id="@+id/edit_profile_la"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:visibility="gone"
+        layout="@layout/fragment_profile__edit" />
 
 </RelativeLayout>

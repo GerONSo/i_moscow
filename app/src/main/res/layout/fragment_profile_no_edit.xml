@@ -16,8 +16,7 @@
             android:layout_height="100dp"
             android:scaleType="centerCrop"
             app:layout_constraintTop_toTopOf="parent"
-            android:src="@drawable/vector_profile"
-            />
+            android:src="@drawable/vector_profile" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/prof_picture"
@@ -38,7 +37,7 @@
             android:textSize="20sp"
             android:layout_marginStart="56dp"
             android:layout_marginTop="68dp"
-            android:text="Богушевич Степан"
+            android:text=""
             app:layout_constraintStart_toEndOf="@id/prof_picture"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -74,7 +73,7 @@
             android:layout_marginEnd="180dp"
             android:src="@drawable/instagram"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/edit_profile" />
+            app:layout_constraintTop_toBottomOf="@id/no_edit_profile" />
 
         <ImageView
             android:id="@+id/social_facebook"
@@ -84,7 +83,7 @@
             android:layout_marginTop="16dp"
             android:src="@drawable/facebook"
             app:layout_constraintStart_toEndOf="@+id/social_inst"
-            app:layout_constraintTop_toBottomOf="@id/edit_profile" />
+            app:layout_constraintTop_toBottomOf="@id/no_edit_profile" />
 
         <ImageView
             android:id="@+id/social_mail"
@@ -94,7 +93,7 @@
             android:layout_marginTop="16dp"
             android:src="@drawable/gmail"
             app:layout_constraintStart_toEndOf="@+id/social_facebook"
-            app:layout_constraintTop_toBottomOf="@id/edit_profile" />
+            app:layout_constraintTop_toBottomOf="@id/no_edit_profile" />
 
         <TextView
             android:id="@+id/phone_number"
@@ -129,14 +128,14 @@
             android:layout_marginTop="24dp"
             android:background="@drawable/line_back"
 
-            android:checkedButton="@+id/offer"
+            android:checkedButton="@+id/rb_slave"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tv_role"
             app:layout_constraintTop_toBottomOf="@+id/phone_number">
 
             <RadioButton
-                android:id="@+id/search"
+                android:id="@+id/rb_slave"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="1dp"
@@ -148,10 +147,11 @@
                 android:button="@null"
                 android:gravity="center"
                 android:text="Участник"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:onClick="onRadioButtonClicked"/>
 
             <RadioButton
-                android:id="@+id/offer"
+                android:id="@+id/rb_master"
                 android:layout_width="0dp"
                 style="@style/MediumRadio"
                 android:layout_height="match_parent"
@@ -163,7 +163,8 @@
                 android:button="@null"
                 android:gravity="center"
                 android:text="Тим лид"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:onClick="onRadioButtonClicked"/>
         </RadioGroup>
 
         <TextView
@@ -230,7 +231,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/tv_education"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="24dp"
             style="@style/RegullarTextView"
@@ -267,49 +268,62 @@
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="24dp"
             style="@style/RegullarTextView"
-            android:text="Период обучени"
+            android:text="Период обучения"
             />
 
         <TextView
             android:id="@+id/set_educ_place"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="96dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="24dp"
+            android:layout_marginLeft="24dp"
 
             android:text="Мтуси"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:textAlignment="center"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/study_place"
             app:layout_constraintTop_toBottomOf="@+id/tv_education" />
 
         <TextView
             android:id="@+id/set_educ_spec"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="64dp"
+            android:layout_marginRight="24dp"
+            android:layout_marginLeft="24dp"
+
             android:gravity="center"
             android:text="Системы связи"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/study_place"
             app:layout_constraintTop_toBottomOf="@+id/set_educ_place" />
 
         <TextView
             android:id="@+id/set_educ_degree"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:layout_marginEnd="72dp"
+            android:layout_marginRight="24dp"
+            android:layout_marginLeft="24dp"
+
+            android:textAlignment="center"
             android:text="Бакалавриат"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/study_place"
             app:layout_constraintTop_toBottomOf="@+id/set_educ_spec" />
         <TextView
             android:id="@+id/set_educ_date"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:layout_marginEnd="72dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginLeft="24dp"
+            android:textAlignment="center"
             android:text="2020 - 2024"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/educ_degree" />
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/education_date"
+            app:layout_constraintBottom_toBottomOf="@id/education_date"
+            app:layout_constraintLeft_toRightOf="@id/study_place"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

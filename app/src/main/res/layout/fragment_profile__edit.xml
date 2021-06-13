@@ -48,7 +48,7 @@
             android:id="@+id/main_skill"
             style="@style/RegullarTextView"
             android:layout_width="wrap_content"
-            android:layout_height="20dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="56dp"
             android:layout_marginTop="16dp"
             android:text="Ui/Ux"
@@ -100,8 +100,8 @@
 
         <EditText
             android:id="@+id/phone_number"
-            android:layout_width="135dp"
-            android:layout_height="17dp"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="72dp"
             style="@style/MediumTextView"
@@ -110,63 +110,6 @@
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/social_facebook" />
-
-        <TextView
-            android:id="@+id/tv_role"
-            style="@style/MediumTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="116dp"
-            android:text="Роль:"
-            android:textSize="22sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/prof_picture" />
-
-        <RadioGroup
-            android:id="@+id/toggle"
-            android:layout_width="200dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="45dp"
-            android:layout_marginTop="24dp"
-            android:background="@drawable/line_back"
-
-            android:checkedButton="@+id/offer"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/tv_role"
-            app:layout_constraintTop_toBottomOf="@+id/phone_number">
-
-            <RadioButton
-                android:id="@+id/search"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="1dp"
-                style="@style/MediumRadio"
-                android:layout_marginTop="1dp"
-                android:layout_marginBottom="1dp"
-                android:layout_weight="1"
-                android:background="@drawable/togle_back"
-                android:button="@null"
-                android:gravity="center"
-                android:text="Участник"
-                android:textColor="@color/black" />
-
-            <RadioButton
-                android:id="@+id/offer"
-                android:layout_width="0dp"
-                style="@style/MediumRadio"
-                android:layout_height="match_parent"
-                android:layout_marginTop="1dp"
-                android:layout_marginRight="1dp"
-                android:layout_marginBottom="1dp"
-                android:layout_weight="1"
-                android:background="@drawable/togle_back"
-                android:button="@null"
-                android:gravity="center"
-                android:text="Тим лид"
-                android:textColor="@color/black" />
-        </RadioGroup>
 
         <TextView
             android:id="@+id/tv_about"
@@ -178,7 +121,7 @@
             android:text="Обо мне:"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_role" />
+            app:layout_constraintTop_toBottomOf="@+id/social_inst" />
 
         <EditText
             android:id="@+id/txt_about"
@@ -235,6 +178,7 @@
             android:layout_marginTop="6dp"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="24dp"
+            android:textSize="16sp"
             style="@style/RegullarTextView"
             android:text="Учебное заведение"
             />
@@ -243,8 +187,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/study_place"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
+            android:textSize="16sp"
             android:layout_marginStart="24dp"
             style="@style/RegullarTextView"
             android:text="Специализация"
@@ -254,7 +199,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/speciality"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="16dp"
+            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="24dp"
             style="@style/RegullarTextView"
@@ -265,22 +211,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/educ_degree"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
+            android:textSize="16sp"
             android:layout_marginStart="24dp"
             style="@style/RegullarTextView"
-            android:text="Период обучени"
+            android:text="Период обучения"
             />
 
         <EditText
             android:id="@+id/set_educ_place"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
             android:layout_marginEnd="96dp"
             android:text="Мтуси"
+            android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_education" />
+            app:layout_constraintTop_toTopOf="@id/study_place"
+            app:layout_constraintBottom_toBottomOf="@id/study_place"/>
 
         <EditText
             android:id="@+id/set_educ_spec"
@@ -290,8 +238,10 @@
             android:layout_marginEnd="64dp"
             android:gravity="center"
             android:text="Системы связи"
+            android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/set_educ_place" />
+            app:layout_constraintTop_toTopOf="@id/speciality"
+            app:layout_constraintBottom_toBottomOf="@id/speciality"/>
 
         <EditText
             android:id="@+id/set_educ_degree"
@@ -300,14 +250,17 @@
             android:layout_marginTop="6dp"
             android:layout_marginEnd="72dp"
             android:text="Бакалавриат"
+            android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/set_educ_spec" />
+            app:layout_constraintTop_toTopOf="@id/educ_degree"
+            app:layout_constraintBottom_toBottomOf="@id/educ_degree"/>
         <EditText
             android:id="@+id/set_educ_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
             android:layout_marginEnd="72dp"
+            android:textSize="14sp"
             android:text="2020 - 2024"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/educ_degree" />

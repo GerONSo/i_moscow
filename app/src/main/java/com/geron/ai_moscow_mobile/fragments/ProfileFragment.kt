@@ -7,17 +7,44 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import android.widget.RadioGroup
+import android.widget.TextView
+import androidx.fragment.app.viewModels
 import com.geron.ai_moscow_mobile.AccountTypeRepository
+import com.geron.ai_moscow_mobile.CookieRepository
 import com.geron.ai_moscow_mobile.R
+import com.geron.ai_moscow_mobile.data_classes.Account
+import com.geron.ai_moscow_mobile.viewmodels.ProfileViewModel
+import kotlinx.coroutines.runBlocking
 
 class ProfileFragment : Fragment() {
-    lateinit var btn_edit:Button
-    lateinit var btn_no_edit:Button
-    lateinit var edit_profile:View
-    lateinit var no_edit_profile_la:View
+    lateinit var btn_edit: TextView
+    lateinit var btn_no_edit: TextView
+    lateinit var edit_profile: View
+    lateinit var no_edit_profile_la: View
+
+    lateinit var nameTextView: TextView
+    lateinit var mainSkillTextView: TextView
+    lateinit var phoneTextView: TextView
+    lateinit var aboutTextView: TextView
+    lateinit var educationPlaceTextView: TextView
+    lateinit var educationSpecializationTextView: TextView
+    lateinit var educationDegreeTextView: TextView
+    lateinit var educationDateTextView: TextView
+
+    lateinit var nameEditText: EditText
+    lateinit var mainSkillEditText: EditText
+    lateinit var phoneEditText: EditText
+    lateinit var aboutEditText: EditText
+    lateinit var educationPlaceEditText: EditText
+    lateinit var educationSpecializationEditText: EditText
+    lateinit var educationDegreeEditText: EditText
+    lateinit var educationDateEditText: EditText
+
+    val myProfileViewModel: ProfileViewModel by viewModels()
 
     val toggle: RadioGroup by lazy {
         requireView().findViewById(R.id.toggle)
@@ -34,17 +61,46 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         btn_edit = view.findViewById(R.id.edit_profile)
         btn_no_edit = view.findViewById(R.id.no_edit_profile)
-
         edit_profile = view.findViewById(R.id.edit_profile_la)
         no_edit_profile_la = view.findViewById(R.id.no_edit_profile_la)
 
-        btn_edit.setOnClickListener {
-            no_edit_profile_la.visibility = View.INVISIBLE
+        nameTextView = no_edit_profile_la.findViewById(R.id.txt_name)
+        mainSkillTextView = no_edit_profile_la.findViewById(R.id.main_skill)
+        phoneTextView = no_edit_profile_la.findViewById(R.id.phone_number)
+        aboutTextView = no_edit_profile_la.findViewById(R.id.txt_about)
+        educationDateTextView = no_edit_profile_la.findViewById(R.id.set_educ_date)
+        educationDegreeTextView = no_edit_profile_la.findViewById(R.id.set_educ_degree)
+        educationPlaceTextView = no_edit_profile_la.findViewById(R.id.set_educ_place)
+        educationSpecializationTextView = no_edit_profile_la.findViewById(R.id.set_educ_spec)
+
+        nameEditText= edit_profile.findViewById(R.id.txt_name)
+        mainSkillEditText = edit_profile.findViewById(R.id.main_skill)
+        phoneEditText = edit_profile.findViewById(R.id.phone_number)
+        aboutEditText = edit_profile.findViewById(R.id.txt_about)
+        educationDateEditText = edit_profile.findViewById(R.id.set_educ_date)
+        educationDegreeEditText = edit_profile.findViewById(R.id.set_educ_degree)
+        educationPlaceEditText = edit_profile.findViewById(R.id.set_educ_place)
+        educationSpecializationEditText = edit_profile.findViewById(R.id.set_educ_spec)
+
+        runBlocking { myProfileViewModel.getMyAccount(CookieRepository.cookie!!) }
+        myProfileViewModel.getMyAccountProfile().observe(viewLifecycleOwner, { myAccount ->
+            nameTextView.text = myAccount.name
+            nameEditText.setText(myAccount.name)
+        })
+        btn_no_edit.setOnClickListener {
+            no_edit_profile_la.visibility = View.GONE
             edit_profile.visibility = View.VISIBLE
         }
-        btn_no_edit.setOnClickListener {
-            edit_profile.visibility = View.INVISIBLE
-            no_edit_profile_la.visibility =  View.VISIBLE
+        btn_edit.setOnClickListener {
+            edit_profile.visibility = View.GONE
+            no_edit_profile_la.visibility = View.VISIBLE
+            var account = myProfileViewModel.getMyAccountProfile().value
+            if(account != null && CookieRepository.cookie != null) {
+                account.name = nameEditText.text.toString()
+                runBlocking {
+                    myProfileViewModel.updateAccount(CookieRepository.cookie!!, account)
+                }
+            }
         }
         when(AccountTypeRepository.type) {
             AccountTypeRepository.AccountType.MASTER -> {
@@ -53,5 +109,6 @@ class ProfileFragment : Fragment() {
             AccountTypeRepository.AccountType.SLAVE -> {
                 toggle.check(R.id.rb_slave)
             }
+        }
     }
 }

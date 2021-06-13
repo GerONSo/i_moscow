@@ -5,19 +5,19 @@ import android.util.EventLogTags
 import java.net.PasswordAuthentication
 
 data class Account (
-    val id: String,
-    val name: String,
-    val mail: String,
-    val password: String,
-    val tags: List<String>,
-    val photoLink: String,
-    val myEvents: List<String>,
-    val masterProjectIds: List<String>,
-    val slaveProjectIds: List<String>,
-    val chatIds: List<String>,
-    val metadata: AccountMetadata
+    var id: String,
+    var name: String,
+    var mail: String,
+    var password: String,
+    var tags: List<String>,
+    var photoLink: String,
+    var myEvents: List<String>,
+    var masterProjectIds: List<String>,
+    var slaveProjectIds: List<String>,
+    var chatIds: List<String>,
+    var metadata: AccountMetadata
 )
 
 data class AccountMetadata (
-    val description: String
+    var description: String
 )
