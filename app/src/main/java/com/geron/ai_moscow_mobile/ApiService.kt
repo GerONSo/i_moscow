@@ -31,5 +31,6 @@ interface ApiService {
     suspend fun getMyAccount()
 
     @GET("/get_projects_list")
-    suspend fun getProjectsList(): List<Project>
+    suspend fun getProjectsList(): Response<List<Project>>
+
 }
