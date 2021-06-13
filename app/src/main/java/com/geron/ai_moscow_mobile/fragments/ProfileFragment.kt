@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
+import android.widget.RadioGroup
+import com.geron.ai_moscow_mobile.AccountTypeRepository
 import com.geron.ai_moscow_mobile.R
 
 class ProfileFragment : Fragment() {
@@ -16,6 +18,10 @@ class ProfileFragment : Fragment() {
     lateinit var btn_no_edit:Button
     lateinit var edit_profile:View
     lateinit var no_edit_profile_la:View
+
+    val toggle: RadioGroup by lazy {
+        requireView().findViewById(R.id.toggle)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,15 +39,19 @@ class ProfileFragment : Fragment() {
         no_edit_profile_la = view.findViewById(R.id.no_edit_profile_la)
 
         btn_edit.setOnClickListener {
-
             no_edit_profile_la.visibility = View.INVISIBLE
             edit_profile.visibility = View.VISIBLE
-
-
         }
         btn_no_edit.setOnClickListener {
             edit_profile.visibility = View.INVISIBLE
             no_edit_profile_la.visibility =  View.VISIBLE
         }
+        when(AccountTypeRepository.type) {
+            AccountTypeRepository.AccountType.MASTER -> {
+                toggle.check(R.id.rb_master)
+            }
+            AccountTypeRepository.AccountType.SLAVE -> {
+                toggle.check(R.id.rb_slave)
+            }
     }
 }

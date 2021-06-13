@@ -8,14 +8,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.geron.ai_moscow_mobile.EventsAdapter
+import com.geron.ai_moscow_mobile.adapters.MyEventsAdapter
 import com.geron.ai_moscow_mobile.R
 import com.geron.ai_moscow_mobile.viewmodels.MyEventsViewModel
 
 class MyEventsFragment : Fragment() {
 
     val myEventsRecyclerView: RecyclerView by lazy { requireView().findViewById(R.id.rv_my_events) }
-    val myEventsAdapter: EventsAdapter by lazy { EventsAdapter(true) }
+    val myEventsAdapter: MyEventsAdapter by lazy { MyEventsAdapter() }
     val myEventsViewModel: MyEventsViewModel by viewModels()
 
     override fun onCreateView(

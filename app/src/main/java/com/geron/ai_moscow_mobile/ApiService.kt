@@ -1,9 +1,6 @@
 package com.geron.ai_moscow_mobile
 
-import com.geron.ai_moscow_mobile.data_classes.Cookie
-import com.geron.ai_moscow_mobile.data_classes.Event
-import com.geron.ai_moscow_mobile.data_classes.EventID
-import com.geron.ai_moscow_mobile.data_classes.User
+import com.geron.ai_moscow_mobile.data_classes.*
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -32,5 +29,14 @@ interface ApiService {
 
     @GET("/get_projects_list")
     suspend fun getProjectsList(): Response<List<Project>>
+
+    @GET("/get_accounts_list")
+    suspend fun getAccountsList(): Response<List<Account>>
+
+    @GET("/get_my_master_projects/{cookie}")
+    suspend fun getMyMasterProjects(@Path("cookie") cookie: String): Response<List<Project>>
+
+    @GET("/get_my_slave_projects/{cookie}")
+    suspend fun getMySlaveProjects(@Path("cookie") cookie: String): Response<List<Project>>
 
 }

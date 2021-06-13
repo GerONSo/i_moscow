@@ -8,8 +8,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.geron.ai_moscow_mobile.EventsAdapter
-import com.geron.ai_moscow_mobile.R
+import com.geron.ai_moscow_mobile.*
+import com.geron.ai_moscow_mobile.adapters.AllAccountsAdapter
+import com.geron.ai_moscow_mobile.adapters.AllProjectsAdapter
 import com.geron.ai_moscow_mobile.viewmodels.AllProjectsViewModel
 
 class AllProjectsFragment : Fragment() {
@@ -18,8 +19,12 @@ class AllProjectsFragment : Fragment() {
         requireView().findViewById(R.id.rv_projects)
     }
 
-    val projectsAdapter: EventsAdapter by lazy {
-        EventsAdapter(isProjects = true)
+    val accountsAdapter: AllAccountsAdapter by lazy {
+        AllAccountsAdapter()
+    }
+
+    val projectsAdapter: AllProjectsAdapter by lazy {
+        AllProjectsAdapter()
     }
 
     val allProjectsViewModel: AllProjectsViewModel by activityViewModels()
@@ -33,13 +38,25 @@ class AllProjectsFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        allProjectsViewModel.getEventList().observe(viewLifecycleOwner, { allProjects ->
-            projectsAdapter.updateAllProjectsList(allProjects)
-        })
-        projectsRecyclerView.apply {
-            adapter = projectsAdapter
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        if(AccountTypeRepository.type == AccountTypeRepository.AccountType.MASTER) {
+            allProjectsViewModel.getSlaveList().observe(viewLifecycleOwner, { allAccounts ->
+                accountsAdapter.updateAllAccountsList(allAccounts)
+            })
+            projectsRecyclerView.apply {
+                adapter = accountsAdapter
+                layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            }
         }
+        else {
+            allProjectsViewModel.getProjectList().observe(viewLifecycleOwner, { allProjects ->
+                projectsAdapter.updateAllProjectsList(allProjects)
+            })
+            projectsRecyclerView.apply {
+                adapter = projectsAdapter
+                layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            }
+        }
+
     }
 
 

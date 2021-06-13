@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import com.geron.ai_moscow_mobile.AccountTypeRepository
 import com.geron.ai_moscow_mobile.CallbackHelper
 import com.geron.ai_moscow_mobile.R
 
@@ -40,8 +41,10 @@ class MenuFragment : Fragment() {
             CallbackHelper.onMenuBackButtonClicked()
         }
 
-        buttonAllProjects.setOnClickListener {
-            CallbackHelper.onAllProjects()
+        buttonAllProjects.apply {
+            setOnClickListener {
+                CallbackHelper.onAllProjects()
+            }
         }
 
         buttonMyEvents.setOnClickListener {
@@ -58,6 +61,16 @@ class MenuFragment : Fragment() {
 
         buttonMenuClose.setOnClickListener {
             CallbackHelper.onMenuBackButtonClicked()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        buttonAllProjects.text = if(AccountTypeRepository.type == AccountTypeRepository.AccountType.MASTER) {
+            "Рекомендуемые участники"
+        }
+        else {
+            "Все проекты"
         }
     }
 }

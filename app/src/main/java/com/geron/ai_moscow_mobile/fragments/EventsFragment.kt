@@ -18,7 +18,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.geron.ai_moscow_mobile.CallbackHelper
-import com.geron.ai_moscow_mobile.EventsAdapter
+import com.geron.ai_moscow_mobile.adapters.EventsAdapter
 import com.geron.ai_moscow_mobile.R
 import com.geron.ai_moscow_mobile.viewmodels.EventsViewModel
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
