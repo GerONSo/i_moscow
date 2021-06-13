@@ -21,6 +21,12 @@ class ChatTypes:
     GROUP = "group"
 
 
+class InviteStatus:
+    ACCEPTED = "accepted"
+    DECLINED = "declined"
+    AWAITING = 'awaiting'
+
+
 class BaseEncoder(json.JSONEncoder):
     def default(self, o):
         return o.__dict__
@@ -172,12 +178,8 @@ class Message(BaseModel):
             id = generate_id()
         if from_user is None:
             raise ValueError
-        if metadata is None:
-            metadata = dict()
-        if type(metadata) == str:
-            metadata = json.loads(metadata)
         self.number = number
         self.id = id
         self.from_user = from_user
         self.message_type = message_type
-        self.metadata = metadata
+        self.metadata = decode_object(metadata, json)

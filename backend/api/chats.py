@@ -51,3 +51,10 @@ def get_members_list(cookie):
         return {}, 403
     result = chat.get_members(person_id=user_id)
     return Response(json.dumps(result), mimetype='application/json')
+
+
+@app.route("/get_full_members_list/", methods=["GET"])  # do not use in app
+def get_full_members_list():
+    chat = ChatRepository(id=request.json["chat_id"])
+    result = [member.to_dict() for member in chat.members]
+    return Response(json.dumps(result), mimetype='application/json')

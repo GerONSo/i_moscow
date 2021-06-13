@@ -1,9 +1,11 @@
+import json
 from typing import List
 
 from common import generate_id
 from common.models import Chat
 from common.models import ChatRoles
 from common.models import ChatTypes
+from common.models import InviteStatus
 from common.models import Member
 from common.models import Message
 from common.models import MessageTypes
@@ -79,11 +81,10 @@ class ChatRepository:
         if metadata is None:
             metadata = dict()
         person_role = self.person_role(person_id)
-        print(person_role)
         if person_role == ChatRoles.UNAPPROVED and message_type != MessageTypes.INVITE:
             return None
         if message_type == MessageTypes.INVITE:
-            metadata["accepted"] = False
+            metadata["status"] = InviteStatus.AWAITING
 
         message = Message(from_user=person_id,
                           message_type=message_type, metadata=metadata)
@@ -102,12 +103,19 @@ class ChatRepository:
         if member_id in self.member_ids():
             return None
 
+        if self.chat.chat_type == ChatTypes.PERSON and len(self.members) == 1 and member_role == ChatRoles.DEFAULT:
+            self.chat.metadata = {"ident": (person_id, member_id)}
+            mydb.execute("update chats set metadata=%s where id=%s", (json.dumps(self.chat.metadata), self.chat.id)),
+            mydb.fetchall()
+
         member = Member(id=member_id, role=member_role)
         mydb.execute("insert into members_{} (id, role) values (%s, %s)".format(self.chat.id), member.to_dataraw())
         myconnect.commit()
         return member
 
     def join_chat(self, member_id, member_role) -> Member:
+        if member_id in self.member_ids():
+            return None
         if self.chat.chat_type != ChatTypes.GROUP or member_role == ChatRoles.OWNER:
             return None
 
@@ -115,3 +123,20 @@ class ChatRepository:
         mydb.execute("insert into members_{} (id, role) values (%s, %s)".format(self.chat.id), member.to_dataraw())
         myconnect.commit()
         return member
+
+    def set_invite_status(self, from_user, status):
+        mydb.execute("select (metadata) from messages_{} where from_user=%s and message_type=%s"
+                     .format(self.chat.id), (from_user, MessageTypes.INVITE))
+        message = mydb.fetchall()
+        if not message:
+            return
+        metadata = json.loads(message[0][0])
+        metadata["status"] = status
+        mydb.execute("update messages_{} set metadata=%s where from_user=%s and message_type=%s"
+                     .format(self.chat.id), (json.dumps(metadata), from_user, MessageTypes.INVITE))
+
+        if self.chat.chat_type == ChatTypes.GROUP and status == InviteStatus.ACCEPTED:
+            mydb.execute("update members_{} set role=%s where id=%s".format(self.chat.id),
+                         (ChatRoles.DEFAULT, from_user))
+
+        myconnect.commit()

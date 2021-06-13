@@ -83,3 +83,22 @@ def update_my_account(cookie):
     mydb.execute(query, account.to_dataraw(skip_fields=["id", "tags"]) + (account.id, ))
     myconnect.commit()
     return account.to_primitive()
+
+
+@app.route("/get_my_chats/<cookie>", methods=["GET"])
+def get_my_chats(cookie):
+    user_id = common.actions.make_cookie_authorize(cookie)
+    if user_id is None:
+        return {}, 401
+    account = common.actions.get_account_by_id(user_id)
+    chats = [common.actions.get_chat_by_id(id_) for id_ in account.chat_ids]
+    result = [chat.to_dict() for chat in chats]
+    return Response(json.dumps(result), mimetype='application/json')
+
+
+@app.route("/get_accounts_list", methods=["GET"])
+def get_accounts_list():
+    mydb.execute('''select * from accounts''')
+    query_result = mydb.fetchall()
+    result = [Account(*template).to_dict() for template in query_result]
+    return Response(json.dumps(result), mimetype='application/json')
