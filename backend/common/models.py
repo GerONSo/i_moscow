@@ -182,4 +182,4 @@ class Message(BaseModel):
         self.id = id
         self.from_user = from_user
         self.message_type = message_type
-        self.metadata = decode_object(metadata, json)
+        self.metadata = decode_object(metadata, dict)
