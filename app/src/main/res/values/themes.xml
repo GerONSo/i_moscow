@@ -18,4 +18,27 @@
     <style name="MediumTextView" parent="Widget.AppCompat.TextView">
         <item name="fontFamily">@font/ttfirsneue_medium</item>
     </style>
+
+    <style name="MediumButtonText" parent="Widget.AppCompat.Button">
+        <item name="fontFamily">@font/ttfirsneue_medium</item>
+    </style>
+
+    <style name="RegullarTextView" parent="Widget.AppCompat.TextView">
+        <item name="fontFamily">@font/ttfirsneue_regular</item>
+    </style>
+
+    <style name="MediumItalicTextView" parent="Widget.AppCompat.TextView">
+        <item name="fontFamily">@font/tfirsneue_mediumitalic</item>
+    </style>
+    <style name="MediumRadio" parent="Widget.AppCompat.CompoundButton.RadioButton">
+        <item name="fontFamily">@font/ttfirsneue_regular</item>
+    </style>
+
+    <style name="LightTextView" parent="Widget.AppCompat.TextView">
+        <item name="fontFamily">@font/ttfirsneue_extralight</item>
+    </style>
+
+    <style name="LightButtonText" parent="Widget.AppCompat.Button">
+        <item name="fontFamily">@font/ttfirsneue_extralight</item>
+    </style>
 </resources>
