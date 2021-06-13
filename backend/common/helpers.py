@@ -1,3 +1,4 @@
+import json
 import random
 
 
@@ -13,3 +14,11 @@ def generate_cookie():
     for i in range(25):
         cookie += str(random.randint(0, 9))
     return cookie
+
+
+def decode_object(object, default_type: type):
+    if object is None:
+        return default_type()
+    if type(object) == str:
+        return json.loads(object)
+    return object

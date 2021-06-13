@@ -20,7 +20,8 @@ def create_account():
         mydb.execute("insert into account_tag_match (id, tag) values (%s, %s)", (account.id, tag))
     query = '''
         insert into accounts 
-            (id, name, mail, password, snils, description, links, photo, my_events, master_project_ids, slave_project_ids)
+            (id, name, mail, password, photo, my_events, master_project_ids, slave_project_ids, 
+             chat_ids, notifications, metadata)
             values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
     '''
     mydb.execute(query, account.to_dataraw(skip_fields=["tags"]))
@@ -76,8 +77,8 @@ def update_my_account(cookie):
 
     query = '''
             update accounts set
-                name = %s, mail = %s, password = %s, snils = %s, description = %s, links = %s, 
-                photo = %s, my_events = %s, master_project_ids = %s, slave_project_ids = %s where id = %s
+                name = %s, mail = %s, password = %s, photo = %s, my_events = %s, master_project_ids = %s,
+                slave_project_ids = %s, chat_ids = %s, notifications = %s, metadata = %s where id = %s
         '''
     mydb.execute(query, account.to_dataraw(skip_fields=["id", "tags"]) + (account.id, ))
     myconnect.commit()

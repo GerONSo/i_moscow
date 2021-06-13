@@ -1,1 +1,1 @@
-from common.helpers import generate_id, generate_cookie
+from common.helpers import generate_id, generate_cookie, decode_object

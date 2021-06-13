@@ -2,7 +2,23 @@ import json
 
 import common.actions
 
-from common import generate_id
+from common import generate_id, decode_object
+
+
+class ChatRoles:
+    OWNER = "owner"
+    DEFAULT = "default"
+    UNAPPROVED = "unapproved"
+
+
+class MessageTypes:
+    DEFAULT = "default"
+    INVITE = "invite"
+
+
+class ChatTypes:
+    PERSON = "person"
+    GROUP = "group"
 
 
 class BaseEncoder(json.JSONEncoder):
@@ -80,46 +96,30 @@ class Account(BaseModel):
                  name="Common",
                  mail="",
                  password="",
-                 snils="",
-                 description="",
-                 links=None,
                  photo_type="/photos/xs.jpg",
                  my_events=None,
                  master_project_ids=None,
                  slave_project_ids=None,
+                 chat_ids=None,
+                 notifications=None,
+                 metadata=None,
                  tags=None):
         if id is None:
             id = generate_id()
         if tags is None:
             tags = common.actions.get_tags_by_account(id)
-        if links is None:
-            links = []
-        if master_project_ids is None:
-            master_project_ids = []
-        if type(master_project_ids) == str:
-            master_project_ids = json.loads(master_project_ids)
-        if slave_project_ids is None:
-            slave_project_ids = []
-        if type(slave_project_ids) == str:
-            slave_project_ids = json.loads(slave_project_ids)
-        if type(links) == str:
-            links = json.loads(links)
-        if my_events is None:
-            my_events = []
-        if type(my_events) == str:
-            my_events = json.loads(my_events)
         self.id = id
         self.name = name
         self.mail = mail
         self.password = password
-        self.snils = snils
-        self.description = description
-        self.links = links
         self.tags = tags
         self.photo_link = photo_type
-        self.my_events = my_events
-        self.master_project_ids = master_project_ids
-        self.slave_project_ids = slave_project_ids
+        self.my_events = decode_object(my_events, list)
+        self.master_project_ids = decode_object(master_project_ids, list)
+        self.slave_project_ids = decode_object(slave_project_ids, list)
+        self.chat_ids = decode_object(chat_ids, list)
+        self.notifications = decode_object(notifications, dict)
+        self.metadata = decode_object(metadata, dict)
 
 
 class Project(BaseModel):
@@ -134,18 +134,8 @@ class Project(BaseModel):
                  tags=None):
         if id is None:
             id = generate_id()
-        if master_id is None:
+        if master_id is None or chat_id is None:
             raise ValueError
-        if chat_id is None:
-            chat_id = generate_id()
-        if slaves_id is None:
-            slaves_id = []
-        if type(slaves_id) == str:
-            slaves_id = json.loads(slaves_id)
-        if metadata is None:
-            metadata = dict()
-        if type(metadata) == str:
-            metadata = json.loads(metadata)
         if tags is None:
             tags = common.actions.get_tags_by_account(id)
 
@@ -153,7 +143,41 @@ class Project(BaseModel):
         self.name = name
         self.master_id = master_id
         self.chat_id = chat_id
-        self.slaves_id = slaves_id
+        self.slaves_id = decode_object(slaves_id, list)
         self.photo_link = photo_type
-        self.metadata = metadata
+        self.metadata = decode_object(metadata, dict)
         self.tags = tags
+
+
+class Chat(BaseModel):
+    def __init__(self, id=None, chat_type=ChatTypes.PERSON, metadata=None):
+        if id is None:
+            raise ValueError
+        self.id = id
+        self.chat_type = chat_type
+        self.metadata = decode_object(metadata, dict)
+
+
+class Member(BaseModel):
+    def __init__(self, id=None, role=ChatRoles.DEFAULT):
+        if id is None:
+            raise ValueError
+        self.id = id
+        self.role = role
+
+
+class Message(BaseModel):
+    def __init__(self, number=0, id=None, from_user=None, message_type=MessageTypes.DEFAULT, metadata=None):
+        if id is None:
+            id = generate_id()
+        if from_user is None:
+            raise ValueError
+        if metadata is None:
+            metadata = dict()
+        if type(metadata) == str:
+            metadata = json.loads(metadata)
+        self.number = number
+        self.id = id
+        self.from_user = from_user
+        self.message_type = message_type
+        self.metadata = metadata

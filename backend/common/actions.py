@@ -19,7 +19,7 @@ def get_tags_by_account(id_):
     return data
 
 
-def get_account_by_id(id_):
+def get_account_by_id(id_) -> Account:
     mydb.execute("select * from accounts where id = %s", (id_, ))
     template = mydb.fetchall()
     if not template:
