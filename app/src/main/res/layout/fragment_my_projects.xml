@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    tools:context=".fragments.MyProjectsFragment"
+    android:layout_width="match_parent"
+    android:background="#CFF6EB">
+
+    <ImageView
+        android:id="@+id/btn_menu_open_proj"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/ic_btn_menu"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_title_prof"
+        android:text="Тут есть все проекты,\nв которые ты вступил!"
+        android:textSize="20sp"
+        style="@style/MediumTextView"
+        app:layout_constraintTop_toBottomOf="@id/btn_menu_open_proj"
+        android:textColor="@color/black"
+        android:layout_marginTop="54dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_chat"
+        android:textColor="@color/black"
+        android:text="И даже чатики!"
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@id/tv_title_prof"
+        android:layout_marginTop="4dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_my_project"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_chat"
+        tools:listitem="@layout/card_event" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

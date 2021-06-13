@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MenuFragment">
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#CFF6EB">
+    <ImageView
+        android:id="@+id/btn_menu_close"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/ic_btn_menu"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_marginTop="70dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/back_menu"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="270dp"
+        android:layout_height="60dp"
+
+        android:background="@drawable/button_in_menu"
+        android:fontFamily="@font/ttfirsneue_medium"
+        android:text="Мои мероприятия"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        style="@style/MediumButtonText"
+        app:layout_constraintBottom_toTopOf="@id/button_events_my"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_profile"
+        app:layout_constraintVertical_bias="0.185" />
+
+    <Button
+        android:id="@+id/button_events_my"
+        android:layout_width="270dp"
+        android:layout_height="60dp"
+
+        android:background="@drawable/button_in_menu"
+        android:fontFamily="@font/ttfirsneue_medium"
+        android:text="Мои проекты"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        style="@style/MediumButtonText"
+        app:layout_constraintBottom_toTopOf="@id/button_all_events"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button2"
+        app:layout_constraintVertical_bias="1.0" />
+
+
+
+
+    <Button
+        android:id="@+id/button_profile"
+        android:layout_width="270dp"
+        android:layout_height="60dp"
+
+        android:layout_marginTop="148dp"
+        android:background="@drawable/button_in_menu"
+        android:fontFamily="@font/ttfirsneue_medium"
+        android:text="Профиль"
+        android:textColor="@color/black"
+        style="@style/MediumButtonText"
+
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageView" />
+
+    <Button
+        android:id="@+id/button_all_events"
+        android:layout_width="270dp"
+        android:layout_height="60dp"
+
+        android:background="@drawable/button_in_menu"
+        android:fontFamily="@font/ttfirsneue_medium"
+        android:text="Все мероприятия"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        style="@style/MediumButtonText"
+        app:layout_constraintBottom_toTopOf="@+id/button_all_projects"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+
+        app:layout_constraintTop_toBottomOf="@+id/button_events_my"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <Button
+        android:id="@+id/button_all_projects"
+        android:layout_width="270dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="180dp"
+        android:background="@drawable/button_in_menu"
+        android:fontFamily="@font/ttfirsneue_medium"
+        android:text="Все проекты"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        style="@style/MediumButtonText"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+
+
+        app:layout_constraintTop_toBottomOf="@+id/button_all_events"
+        app:layout_constraintVertical_bias="1.0" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</FrameLayout>

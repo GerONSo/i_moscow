@@ -1,0 +1,44 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.Ai_moscow_mobile" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/teal</item>
+        <item name="colorPrimaryVariant">@color/teal</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/teal</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+        <item name="fontFamily">@font/ttfirsneue_extralight</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="MediumTextView" parent="Widget.AppCompat.TextView">
+        <item name="fontFamily">@font/ttfirsneue_medium</item>
+    </style>
+
+    <style name="MediumButtonText" parent="Widget.AppCompat.Button">
+        <item name="fontFamily">@font/ttfirsneue_medium</item>
+    </style>
+
+    <style name="RegullarTextView" parent="Widget.AppCompat.TextView">
+        <item name="fontFamily">@font/ttfirsneue_regular</item>
+    </style>
+
+    <style name="MediumItalicTextView" parent="Widget.AppCompat.TextView">
+        <item name="fontFamily">@font/tfirsneue_mediumitalic</item>
+    </style>
+    <style name="MediumRadio" parent="Widget.AppCompat.CompoundButton.RadioButton">
+        <item name="fontFamily">@font/ttfirsneue_regular</item>
+    </style>
+
+    <style name="LightTextView" parent="Widget.AppCompat.TextView">
+        <item name="fontFamily">@font/ttfirsneue_extralight</item>
+    </style>
+
+    <style name="LightButtonText" parent="Widget.AppCompat.Button">
+        <item name="fontFamily">@font/ttfirsneue_extralight</item>
+    </style>
+</resources>
