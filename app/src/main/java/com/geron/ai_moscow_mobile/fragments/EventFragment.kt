@@ -1,17 +1,21 @@
-package com.geron.ai_moscow_mobile
+package com.geron.ai_moscow_mobile.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
+import com.geron.ai_moscow_mobile.R
+import com.geron.ai_moscow_mobile.ServerHelper
 import com.geron.ai_moscow_mobile.viewmodels.EventsViewModel
+import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
+import kotlinx.coroutines.runBlocking
 
 class EventFragment(val position: Int) : Fragment() {
 
@@ -36,6 +40,14 @@ class EventFragment(val position: Int) : Fragment() {
         requireView().findViewById(R.id.tv_full_description)
     }
 
+    val joinEventButton: Button by lazy {
+        requireView().findViewById(R.id.btn_join_event)
+    }
+
+    val eventLayout: CoordinatorLayout by lazy {
+        requireView().findViewById(R.id.event_layout)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -46,6 +58,26 @@ class EventFragment(val position: Int) : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val currentEvent = model.getEventList().value?.get(position)
+
+        joinEventButton.setOnClickListener {
+            runBlocking { model.joinEvent(currentEvent, position) }
+        }
+        model.getJoined().observe(viewLifecycleOwner, { isJoined ->
+            if(isJoined[position] == "true") {
+                Snackbar.make(
+                    getParentLayoutRootView()!!,
+                    "Теперь вы учавстуете в этом мероприятии",
+                    Snackbar.LENGTH_SHORT
+                ).show()
+            }
+            else if(isJoined[position] == "false") {
+                Snackbar.make(
+                    getParentLayoutRootView()!!,
+                    "Вы уже подписаны на это мероприятие",
+                    Snackbar.LENGTH_SHORT
+                ).show()
+            }
+        })
         Picasso.get()
             .load(ServerHelper.BASE_URL + currentEvent?.photoLink)
             .into(logoImageView)
@@ -54,5 +86,13 @@ class EventFragment(val position: Int) : Fragment() {
         timeTextView.text = currentEvent?.time
         placeTextView.text = currentEvent?.address
         descriptionTextView.text = currentEvent?.fullDescription
+    }
+
+    private fun getParentLayoutRootView(): View? {
+        return if (parentFragment != null) { //if it has a parent fragment
+            requireParentFragment().view
+        } else {
+            requireActivity().window.decorView.rootView
+        }
     }
 }

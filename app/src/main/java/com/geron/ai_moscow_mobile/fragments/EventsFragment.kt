@@ -1,4 +1,4 @@
-package com.geron.ai_moscow_mobile
+package com.geron.ai_moscow_mobile.fragments
 
 import android.app.Activity
 import android.content.Context
@@ -9,26 +9,24 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.geron.ai_moscow_mobile.data_classes.Event
+import com.geron.ai_moscow_mobile.CallbackHelper
+import com.geron.ai_moscow_mobile.EventsAdapter
+import com.geron.ai_moscow_mobile.R
 import com.geron.ai_moscow_mobile.viewmodels.EventsViewModel
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
 
 class EventsFragment : Fragment() {
 
     lateinit var motionLayout: MotionLayout
-    lateinit var buttonMenu:Button
+    lateinit var buttonMenu: ImageView
     val model: EventsViewModel by activityViewModels()
     val eventsAdapter: EventsAdapter by lazy {
         EventsAdapter()
@@ -59,6 +57,11 @@ class EventsFragment : Fragment() {
         searchCardView.setOnClickListener {
             searchEditText.requestFocus()
         }
+        motionLayout.onFocusChangeListener = View.OnFocusChangeListener { view, hasFocus ->
+            if(hasFocus) {
+                closeKeyboard()
+            }
+        }
         searchEditText.apply {
             onFocusChangeListener = View.OnFocusChangeListener { view, hasFocus ->
                 if (hasFocus) {
@@ -71,6 +74,9 @@ class EventsFragment : Fragment() {
                         searchRightImageView.setImageDrawable(null)
                     }
                     motionLayout.transitionToEnd()
+                }
+                else {
+                    closeKeyboard()
                 }
             }
             doOnTextChanged { text, start, before, count ->
@@ -91,7 +97,7 @@ class EventsFragment : Fragment() {
         searchRightImageView.setOnClickListener {
             searchEditText.setText("")
         }
-        setKeyboardVisibilityListener()
+//        setKeyboardVisibilityListener()
         eventsRecyclerView.apply {
             adapter = eventsAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -110,5 +116,11 @@ class EventsFragment : Fragment() {
         val inputMethodManager =
             context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
+    }
+
+    private fun closeKeyboard() {
+        val imm: InputMethodManager =
+            context?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view?.windowToken, 0)
     }
 }

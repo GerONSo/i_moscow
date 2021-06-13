@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/teal"
-    tools:context=".EventFragment">
+    android:id="@+id/event_layout"
+    tools:context=".fragments.EventFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/abl_event"
@@ -155,7 +156,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="54dp"
-                android:id="@+id/btn_accept_event"
+                android:id="@+id/btn_join_event"
                 app:layout_constraintTop_toBottomOf="@id/tv_full_description"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -169,7 +170,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/tv_details"
-                app:layout_constraintTop_toBottomOf="@id/btn_accept_event"
+                app:layout_constraintTop_toBottomOf="@id/btn_join_event"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 android:text="Подробнее можно узнать тут!"

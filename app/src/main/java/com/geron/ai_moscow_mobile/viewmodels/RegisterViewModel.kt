@@ -4,44 +4,30 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.geron.ai_moscow_mobile.CookieRepository
 import com.geron.ai_moscow_mobile.ServerHelper
 import com.geron.ai_moscow_mobile.data_classes.Cookie
 import com.geron.ai_moscow_mobile.data_classes.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
-class AuthorizeViewModel : ViewModel() {
-    private val cookie: MutableLiveData<Cookie> by lazy {
-        MutableLiveData<Cookie>()
-    }
-
-    private val isAuthorized: MutableLiveData<Boolean> by lazy {
+class RegisterViewModel : ViewModel() {
+    private val isRegistered: MutableLiveData<Boolean> by lazy {
         MutableLiveData<Boolean>()
     }
 
-    fun getAccountCookie(): MutableLiveData<Cookie> {
-        return cookie
+    fun getRegistered(): MutableLiveData<Boolean> {
+        return isRegistered
     }
 
-    fun getAuthorized(): MutableLiveData<Boolean> {
-        return isAuthorized
-    }
-
-    suspend fun login(user: User) {
+    suspend fun register(user: User) {
         ServerHelper.service = ServerHelper.makeApiService()
         viewModelScope.launch {
-            val response = ServerHelper.service?.authorize(user)
+            val response = ServerHelper.service?.register(user)
             withContext(Dispatchers.Main) {
                 try {
                     response?.let { response ->
-                        isAuthorized.value = response.isSuccessful
-                        if (response.isSuccessful) {
-                            cookie.value = response.body()
-                            CookieRepository.cookie = cookie.value
-                        }
+                        isRegistered.value = response.isSuccessful
                     }
                 } catch (e: Exception) {
                     Log.d("HTTP request", "Server didn't send response")

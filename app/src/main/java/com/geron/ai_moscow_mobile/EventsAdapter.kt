@@ -1,5 +1,6 @@
 package com.geron.ai_moscow_mobile
 
+import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -7,9 +8,29 @@ import androidx.recyclerview.widget.RecyclerView
 import com.geron.ai_moscow_mobile.data_classes.Event
 import com.squareup.picasso.Picasso
 
-class EventsAdapter() : RecyclerView.Adapter<EventViewHolder>() {
+class EventsAdapter(
+    val isMyEvents: Boolean = false
+) : RecyclerView.Adapter<EventViewHolder>() {
 
     var events: List<Event> = listOf()
+    var myEvents: List<Event> = listOf()
+    lateinit var resources: Resources
+
+    fun updateMyEventsList(events: List<Event>) {
+        val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
+            override fun getOldListSize(): Int = this@EventsAdapter.myEvents.size
+
+            override fun getNewListSize(): Int = events.size
+
+            override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+                this@EventsAdapter.myEvents[oldItemPosition].id == events[newItemPosition].id
+
+            override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+                this@EventsAdapter.myEvents[oldItemPosition] == events[newItemPosition]
+        })
+        this.myEvents = events
+        diffResult.dispatchUpdatesTo(this)
+    }
 
     fun updateList(events: List<Event>) {
         val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
@@ -27,11 +48,22 @@ class EventsAdapter() : RecyclerView.Adapter<EventViewHolder>() {
         diffResult.dispatchUpdatesTo(this)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder =
-        EventViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.card_event, parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder {
+        resources = parent.resources
+        return EventViewHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.card_event, parent, false)
+        )
+    }
 
     override fun onBindViewHolder(holder: EventViewHolder, position: Int) {
-        val currentEvent = events[position]
+        val currentEvent = if(!isMyEvents) {
+            events[position]
+        } else {
+            myEvents[position]
+        }
+        if(isMyEvents) {
+            holder.plusFab?.setImageDrawable(resources.getDrawable(R.drawable.ic_done))
+        }
         holder.titleTextView?.text = currentEvent.name
         holder.descriptionTextView?.text = currentEvent.shortDescription
         Picasso.get().load(ServerHelper.BASE_URL + currentEvent.photoLink).into(holder.photoImageView)
@@ -41,7 +73,11 @@ class EventsAdapter() : RecyclerView.Adapter<EventViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return events.size
+        return if(!isMyEvents) {
+            events.size
+        } else {
+            myEvents.size
+        }
     }
 
 

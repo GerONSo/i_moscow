@@ -7,40 +7,37 @@ import androidx.lifecycle.viewModelScope
 import com.geron.ai_moscow_mobile.CookieRepository
 import com.geron.ai_moscow_mobile.ServerHelper
 import com.geron.ai_moscow_mobile.data_classes.Cookie
-import com.geron.ai_moscow_mobile.data_classes.User
+import com.geron.ai_moscow_mobile.data_classes.Event
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
-class AuthorizeViewModel : ViewModel() {
-    private val cookie: MutableLiveData<Cookie> by lazy {
-        MutableLiveData<Cookie>()
+class MyEventsViewModel : ViewModel() {
+    private val eventsList: MutableLiveData<List<Event>> by lazy {
+        MutableLiveData<List<Event>>(listOf()).also {
+            runBlocking {
+                getMyEvents(CookieRepository.cookie)
+            }
+        }
     }
 
-    private val isAuthorized: MutableLiveData<Boolean> by lazy {
-        MutableLiveData<Boolean>()
+    fun getEventList(): MutableLiveData<List<Event>> {
+        return eventsList
     }
 
-    fun getAccountCookie(): MutableLiveData<Cookie> {
-        return cookie
-    }
-
-    fun getAuthorized(): MutableLiveData<Boolean> {
-        return isAuthorized
-    }
-
-    suspend fun login(user: User) {
+    private suspend fun getMyEvents(cookie: Cookie?) {
+        if(cookie == null) return
         ServerHelper.service = ServerHelper.makeApiService()
         viewModelScope.launch {
-            val response = ServerHelper.service?.authorize(user)
+            val response = ServerHelper.service?.getMyEventsList(cookie.cookie)
             withContext(Dispatchers.Main) {
                 try {
                     response?.let { response ->
-                        isAuthorized.value = response.isSuccessful
                         if (response.isSuccessful) {
-                            cookie.value = response.body()
-                            CookieRepository.cookie = cookie.value
+                            val events = response.body()
+                            Log.d("myEvents", response.body().toString())
+                            eventsList.value = events
                         }
                     }
                 } catch (e: Exception) {

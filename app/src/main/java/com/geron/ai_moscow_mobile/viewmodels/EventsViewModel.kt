@@ -4,8 +4,10 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.geron.ai_moscow_mobile.CookieRepository
 import com.geron.ai_moscow_mobile.ServerHelper
 import com.geron.ai_moscow_mobile.data_classes.Event
+import com.geron.ai_moscow_mobile.data_classes.EventID
 import kotlinx.coroutines.*
 
 class EventsViewModel : ViewModel() {
@@ -15,6 +17,14 @@ class EventsViewModel : ViewModel() {
                 getEvents()
             }
         }
+    }
+
+    private val isJoined: MutableLiveData<MutableList<String>> by lazy {
+        MutableLiveData<MutableList<String>>(MutableList(eventsList.value!!.size) { "afk" })
+    }
+
+    fun getJoined(): MutableLiveData<MutableList<String>> {
+        return isJoined
     }
 
     fun getEventList(): MutableLiveData<List<Event>> {
@@ -38,7 +48,28 @@ class EventsViewModel : ViewModel() {
                     Log.d("HTTP request", "Server didn't send response")
                 }
             }
+        }
+    }
 
+    suspend fun joinEvent(event: Event?, position: Int) {
+        if(CookieRepository.cookie == null ||
+                event == null) return
+        ServerHelper.service = ServerHelper.makeApiService()
+        viewModelScope.launch {
+            val response = ServerHelper.service?.joinToEvent(CookieRepository.cookie!!.cookie, EventID(event.id))
+            withContext(Dispatchers.Main) {
+                try {
+                    response?.let { response ->
+                        isJoined.value = isJoined.value.also {
+                            isJoined.value?.let {
+                                it[position] = response.isSuccessful.toString()
+                            }
+                        }
+                    }
+                } catch (e: Exception) {
+                    Log.d("HTTP request", "Server didn't send response")
+                }
+            }
         }
     }
 }

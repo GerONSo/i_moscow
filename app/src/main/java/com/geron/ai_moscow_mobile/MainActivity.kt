@@ -2,10 +2,9 @@ package com.geron.ai_moscow_mobile
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.telecom.Call
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
-import kotlin.reflect.typeOf
+import com.geron.ai_moscow_mobile.fragments.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -17,8 +16,12 @@ class MainActivity : AppCompatActivity() {
         openFragment(startFragment)
         setCallbacks()
     }
-//tewse
+
+    //tewse
     private fun setCallbacks() {
+        CallbackHelper.onLogin = {
+            replaceFragment(EventsFragment())
+        }
         CallbackHelper.onEventItemClicked = { position ->
             openFragment(EventFragment(position))
         }
@@ -26,18 +29,18 @@ class MainActivity : AppCompatActivity() {
             openFragment(MenuFragment())
         }
         CallbackHelper.onMenuBackButtonClicked = {
-            openFragment(EventsFragment())
+            supportFragmentManager.popBackStack()
         }
-        CallbackHelper.onAllProjects= {
+        CallbackHelper.onAllProjects = {
             openFragment(AllProjectsFragment())
         }
-        CallbackHelper.onMyEvents= {
+        CallbackHelper.onMyEvents = {
             openFragment(MyEventsFragment())
         }
-        CallbackHelper.onMyProjects= {
+        CallbackHelper.onMyProjects = {
             openFragment(MyProjectsFragment())
         }
-        CallbackHelper.onProfileOpen= {
+        CallbackHelper.onProfileOpen = {
             openFragment(ProfileFragment())
         }
     }
@@ -48,7 +51,14 @@ class MainActivity : AppCompatActivity() {
             setReorderingAllowed(true)
             addToBackStack(fragment::class.simpleName)
         }
-        supportFragmentManager.backStackEntryCount
+    }
+
+    private fun replaceFragment(fragment: Fragment) {
+        supportFragmentManager.commit {
+            replace(R.id.fragment_container, fragment, fragment::class.simpleName)
+            setReorderingAllowed(true)
+            addToBackStack(fragment::class.simpleName)
+        }
     }
 
     override fun onBackPressed() {
@@ -56,14 +66,13 @@ class MainActivity : AppCompatActivity() {
         val backEntry = supportFragmentManager.getBackStackEntryAt(index)
         val tag = backEntry.name
         val fragment = supportFragmentManager.findFragmentByTag(tag)
-        if(fragment is StartFragment) {
+        if (fragment is StartFragment) {
             CallbackHelper.onBackPressedStartFragment()
             return
         }
-        if(supportFragmentManager.backStackEntryCount > 0) {
+        if (supportFragmentManager.backStackEntryCount > 0) {
             supportFragmentManager.popBackStack()
-        }
-        else {
+        } else {
             super.onBackPressed()
         }
     }
