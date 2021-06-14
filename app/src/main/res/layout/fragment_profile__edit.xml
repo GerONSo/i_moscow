@@ -148,7 +148,24 @@
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txt_about" />
-        <View
+        <EditText
+            android:layout_width="wrap_content"
+            android:id="@+id/edit_for_tags"
+            android:layout_marginStart="16dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/tv_skils"
+            app:layout_constraintStart_toStartOf="parent"
+            />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="6dp"
+            android:id="@+id/cloud_skils_scroll"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_for_tags"
+            >
+        <com.cunoraz.tagview.TagView
+            xmlns:tagview="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginStart="24dp"
@@ -157,8 +174,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:id="@+id/cloud_skils"
+            android:layout_margin="10dp"
+            tagview:lineMargin="5dp"
+            tagview:tagMargin="5dp"
+            tagview:textPaddingLeft="8dp"
+            tagview:textPaddingTop="5dp"
+            tagview:textPaddingRight="8dp"
+            tagview:textPaddingBottom="5dp"
             android:layout_marginTop="16dp"
             />
+        </ScrollView>
         <TextView
             android:id="@+id/tv_education"
             style="@style/MediumTextView"
@@ -169,7 +194,7 @@
             android:text="Образование:"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cloud_skils" />
+            app:layout_constraintTop_toBottomOf="@+id/cloud_skils_scroll" />
         <TextView
             android:id="@+id/study_place"
             android:layout_width="wrap_content"
