@@ -13,6 +13,7 @@ object CallbackHelper {
     lateinit var onMyEvents: () -> Unit
     lateinit var onMyProjects: () -> Unit
     lateinit var onAllProjects: () -> Unit
+    lateinit var onOpenChat: (chatId: String) -> Unit
 
     lateinit var onLogin: () -> Unit
     lateinit var onBackPressedStartFragment: () -> Unit

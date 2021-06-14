@@ -16,8 +16,11 @@ import androidx.fragment.app.viewModels
 import com.geron.ai_moscow_mobile.AccountTypeRepository
 import com.geron.ai_moscow_mobile.CookieRepository
 import com.geron.ai_moscow_mobile.R
+import com.geron.ai_moscow_mobile.ServerHelper
 import com.geron.ai_moscow_mobile.data_classes.Account
 import com.geron.ai_moscow_mobile.viewmodels.ProfileViewModel
+import com.squareup.picasso.Picasso
+import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.coroutines.runBlocking
 
 class ProfileFragment : Fragment() {
@@ -43,6 +46,8 @@ class ProfileFragment : Fragment() {
     lateinit var educationSpecializationEditText: EditText
     lateinit var educationDegreeEditText: EditText
     lateinit var educationDateEditText: EditText
+    lateinit var profileNoEditImageView: CircleImageView
+    lateinit var profileEditImageView: CircleImageView
 
     val myProfileViewModel: ProfileViewModel by viewModels()
 
@@ -72,6 +77,7 @@ class ProfileFragment : Fragment() {
         educationDegreeTextView = no_edit_profile_la.findViewById(R.id.set_educ_degree)
         educationPlaceTextView = no_edit_profile_la.findViewById(R.id.set_educ_place)
         educationSpecializationTextView = no_edit_profile_la.findViewById(R.id.set_educ_spec)
+        profileNoEditImageView = no_edit_profile_la.findViewById(R.id.prof_picture)
 
         nameEditText= edit_profile.findViewById(R.id.txt_name)
         mainSkillEditText = edit_profile.findViewById(R.id.main_skill)
@@ -81,11 +87,16 @@ class ProfileFragment : Fragment() {
         educationDegreeEditText = edit_profile.findViewById(R.id.set_educ_degree)
         educationPlaceEditText = edit_profile.findViewById(R.id.set_educ_place)
         educationSpecializationEditText = edit_profile.findViewById(R.id.set_educ_spec)
+        profileEditImageView = edit_profile.findViewById(R.id.prof_picture)
 
         runBlocking { myProfileViewModel.getMyAccount(CookieRepository.cookie!!) }
         myProfileViewModel.getMyAccountProfile().observe(viewLifecycleOwner, { myAccount ->
             nameTextView.text = myAccount.name
             nameEditText.setText(myAccount.name)
+            Picasso.get().load(ServerHelper.BASE_URL + myAccount.photoLink)
+                .into(profileEditImageView)
+            Picasso.get().load(ServerHelper.BASE_URL + myAccount.photoLink)
+                .into(profileNoEditImageView)
         })
         btn_no_edit.setOnClickListener {
             no_edit_profile_la.visibility = View.GONE

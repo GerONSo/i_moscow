@@ -1,34 +1,36 @@
 package com.geron.ai_moscow_mobile.fragments
 
+import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
+import android.widget.ImageView
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.geron.ai_moscow_mobile.CookieRepository
 import com.geron.ai_moscow_mobile.R
+import com.geron.ai_moscow_mobile.adapters.ChatAdapter
+import com.geron.ai_moscow_mobile.data_classes.ChatId
+import com.geron.ai_moscow_mobile.data_classes.Message
+import com.geron.ai_moscow_mobile.data_classes.MessageMetadata
+import com.geron.ai_moscow_mobile.data_classes.SendMessage
+import com.geron.ai_moscow_mobile.viewmodels.ChatViewModel
+import kotlinx.coroutines.runBlocking
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class ChatFragment(val chatId: String) : Fragment() {
 
-/**
- * A simple [Fragment] subclass.
- * Use the [ChatFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class ChatFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    lateinit var chatRecyclerView: RecyclerView
+    lateinit var chatAdapter: ChatAdapter
+    lateinit var chatEditText: EditText
+    lateinit var sendMessageButton: ImageView
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    val chatViewModel: ChatViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,23 +40,45 @@ class ChatFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_chat, container, false)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ChatFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ChatFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        chatEditText = view.findViewById(R.id.et_message)
+        chatAdapter = ChatAdapter()
+        chatRecyclerView = view.findViewById(R.id.rv_chat)
+        sendMessageButton = view.findViewById(R.id.btn_send_message)
+
+        sendMessageButton.setOnClickListener {
+            runBlocking {
+                chatViewModel.sendMessage(CookieRepository.cookie!!, SendMessage(
+                    chatId,
+                    "default",
+                    MessageMetadata(chatEditText.text.toString())
+                ))
             }
+        }
+        chatRecyclerView.apply {
+            adapter = chatAdapter
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false).also {
+                it.stackFromEnd = true
+            }
+
+        }
+
+        runBlocking {
+            chatViewModel.getMessages(CookieRepository.cookie!!, ChatId(chatId))
+        }
+        chatViewModel.getChatMessages().observe(viewLifecycleOwner, { messages ->
+            chatAdapter.updateList(messages)
+            chatRecyclerView.requestFocus()
+            chatRecyclerView.scrollToPosition(messages.size - 1)
+            chatEditText.setText("")
+            closeKeyboard()
+        })
     }
+
+    private fun closeKeyboard() {
+        val imm: InputMethodManager =
+            context?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view?.windowToken, 0)
+    }
+
 }

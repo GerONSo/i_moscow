@@ -52,6 +52,9 @@ class MainActivity : AppCompatActivity() {
             onProfileOpen = {
                 openFragment(ProfileFragment())
             }
+            onOpenChat = { chatId ->
+                openFragment(ChatFragment(chatId))
+            }
         }
     }
 

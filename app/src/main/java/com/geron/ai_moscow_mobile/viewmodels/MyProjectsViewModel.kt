@@ -29,7 +29,7 @@ class MyProjectsViewModel : ViewModel() {
     }
 
     fun getMySlaveProjectList(): MutableLiveData<List<Project>> {
-        return myMasterProjects
+        return mySlaveProjects
     }
 
     fun getMyProjects(cookie: Cookie?) {

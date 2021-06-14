@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModel
 import com.geron.ai_moscow_mobile.AccountTypeRepository
+import com.geron.ai_moscow_mobile.CallbackHelper
 import com.geron.ai_moscow_mobile.R
 import com.geron.ai_moscow_mobile.ServerHelper
 import com.geron.ai_moscow_mobile.viewmodels.AllProjectsViewModel
@@ -55,20 +56,28 @@ class ProjectFragment(
     }
 
     private fun loadMy() {
-        val masterProject = myProjects.getMyMasterProjectList().value?.get(position)
-        val slaveProject = myProjects.getMySlaveProjectList().value?.get(position)
         openChatButton.text = "Открыть чат"
 
         if(AccountTypeRepository.type == AccountTypeRepository.AccountType.MASTER) {
+            val masterProject = myProjects.getMyMasterProjectList().value?.get(position)
             nameTextView.text = masterProject?.name
             Picasso.get().load(ServerHelper.BASE_URL + masterProject?.photoLink)
                 .into(logoImageView)
+            openChatButton.setOnClickListener {
+                CallbackHelper.onOpenChat(masterProject?.chatId!!)
+            }
+
         }
         else {
+            val slaveProject = myProjects.getMySlaveProjectList().value?.get(position)
             nameTextView.text = slaveProject?.name
             Picasso.get().load(ServerHelper.BASE_URL + slaveProject?.photoLink)
                 .into(logoImageView)
+            openChatButton.setOnClickListener {
+                CallbackHelper.onOpenChat(slaveProject?.chatId!!)
+            }
         }
+
     }
 
     private fun load() {

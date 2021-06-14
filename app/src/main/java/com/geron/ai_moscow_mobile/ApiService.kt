@@ -42,4 +42,11 @@ interface ApiService {
     @POST("/update_my_account/{cookie}")
     suspend fun updateAccount(@Path("cookie") cookie: String, @Body account: Account): Response<Account>
 
+    @POST("/send_message/{cookie}")
+    suspend fun sendMessage(@Path("cookie") cookie: String, @Body sendMessage: SendMessage): Response<Message>
+
+    @POST("/get_messages_list/{cookie}")
+    suspend fun getChatMessages(@Path("cookie") cookie: String, @Body chatId: ChatId): Response<List<Message>>
+
+
 }
