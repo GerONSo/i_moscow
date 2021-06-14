@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModel
+import com.cunoraz.tagview.TagView
 import com.geron.ai_moscow_mobile.AccountTypeRepository
 import com.geron.ai_moscow_mobile.R
 import com.geron.ai_moscow_mobile.ServerHelper
@@ -34,6 +35,10 @@ class ProjectFragment(
         requireView().findViewById(R.id.iv_event_logo)
     }
 
+    val cloud_skils: TagView by lazy{
+
+        requireView().findViewById(R.id.cloud_skils)
+    }
     val allProjects: AllProjectsViewModel by activityViewModels()
     val myProjects: MyProjectsViewModel by activityViewModels()
 
