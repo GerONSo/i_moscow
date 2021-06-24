@@ -13,6 +13,8 @@ import androidx.core.view.isVisible
 import android.widget.RadioGroup
 import android.widget.TextView
 import androidx.fragment.app.viewModels
+import com.cunoraz.tagview.Tag
+import com.cunoraz.tagview.TagView
 import com.geron.ai_moscow_mobile.AccountTypeRepository
 import com.geron.ai_moscow_mobile.CookieRepository
 import com.geron.ai_moscow_mobile.R
@@ -120,6 +122,12 @@ class ProfileFragment : Fragment() {
             AccountTypeRepository.AccountType.SLAVE -> {
                 toggle.check(R.id.rb_slave)
             }
+        }
+        val tagView = view.findViewById<TagView>(R.id.cloud_skils)
+        tagView.apply {
+            addTag(Tag("Kotlin"))
+            addTag(Tag("Python"))
+            addTag(Tag("Figma"))
         }
     }
 }
